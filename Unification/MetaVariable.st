@@ -1,4 +1,4 @@
-AlgebraicDataType subclass: #MetaVariable
+Object subclass: #MetaVariable
 	instanceVariableNames: 'name'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -21,6 +21,10 @@ hasChildren
 	"Even though unapplied a variable looks like it has a parameter, that's just its name."
 	^ false.! !
 
+!MetaVariable methodsFor: 'testing' stamp: 'fbs 1/4/2012 20:16'!
+isMetaVariable
+	^ true.! !
+
 
 !MetaVariable methodsFor: 'private' stamp: 'fbs 5/24/2011 07:32'!
 name: aSymbol
@@ -30,6 +34,30 @@ name: aSymbol
 !MetaVariable methodsFor: 'destructuring' stamp: 'fbs 5/24/2011 07:34'!
 unapply
 	^ {#Variable. name.}! !
+
+
+!MetaVariable methodsFor: 'comparing' stamp: 'fbs 1/4/2012 20:33'!
+= anObject
+	^ anObject isMetaVariable and: [name = anObject name]! !
+
+!MetaVariable methodsFor: 'comparing' stamp: 'fbs 1/4/2012 20:34'!
+hash
+	"17's a prime."
+	"Implementation copied from AlgebraicDataType >> #hash."
+	^ self unapply inject: 17 into: [:acc :each | 17 * each hash].! !
+
+
+!MetaVariable methodsFor: 'printing' stamp: 'fbs 1/4/2012 20:17'!
+printOn: aStream
+	aStream nextPut: $(.
+	aStream nextPutAll: ((self unapply collect: [:token | token printString])
+		reduce: [:acc :each | acc , ' ', each]).
+	aStream nextPut: $).! !
+
+
+!MetaVariable methodsFor: 'unification' stamp: 'fbs 1/3/2012 15:30'!
+unificationClosureWith: anObject in: termRelation
+	^ termRelation union: self with: anObject.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 

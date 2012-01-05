@@ -1,23 +1,26 @@
 
-!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 10/6/2011 22:10'!
-findSolutionWithUnifier: aDictionary in: termRelation
+!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/4/2012 11:33'!
+findSolutionWithUnifier: anMGU in: solutionFinder
 	| newUnifier |
-	newUnifier := aDictionary copy.
+	newUnifier := anMGU copy.
 	self do:
 		[:each | | d |
-		d := (termRelation classFor: each)
-			findSolutionWithUnifier: newUnifier in: termRelation.
+		d := solutionFinder	findSolution: each using: newUnifier.
 		newUnifier addAll: d].
 	^ newUnifier.! !
 
-!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 10/6/2011 22:04'!
+!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/3/2012 15:30'!
 unificationClosureWith: anObject in: termRelation
-	anObject unificationClosureWithSequence: self in: termRelation.! !
+	anObject isMetaVariable
+		ifTrue: [^ termRelation union: self with: anObject].
+		
+	^ anObject unificationClosureWithSequence: self in: termRelation.! !
 
-!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 10/6/2011 22:05'!
+!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/3/2012 16:14'!
 unificationClosureWithSequence: aCollection in: termRelation
+	| rel |
 	(self size = aCollection size) ifFalse: [UnificationFailure signal].
+	rel := termRelation.
 	self with: aCollection do:
-		[:si :ti | (termRelation classFor: si) unificationClosureWith: (termRelation classFor: ti) in: termRelation].! !
-ClosureWith: (rel find: ti) in: rel].
+		[:si :ti | rel := (rel find: si) unificationClosureWith: (rel find: ti) in: rel].
 	^ rel.! !

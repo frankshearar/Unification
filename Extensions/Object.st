@@ -3,9 +3,9 @@
 =? anObject
 	^ self unifyWith: anObject.! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 10/6/2011 22:12'!
-findSolutionWithUnifier: newUnifier in: termRelation
-	^ newUnifier.! !
+!Object methodsFor: '*Unification' stamp: 'fbs 1/4/2012 11:32'!
+findSolutionWithUnifier: anMGU in: solutionFinder
+	^ anMGU.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 5/25/2011 22:33'!
 isMetaVariable
@@ -27,9 +27,12 @@ matchOneOf: someAssociations otherwise: aBlock
 	 of evaluating aBlock."
 	^ (UnificationMatcher matcherUsing: someAssociations otherwise: aBlock) match: self.! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 7/26/2011 21:44'!
+!Object methodsFor: '*Unification' stamp: 'fbs 1/3/2012 15:28'!
 unificationClosureWith: anObject in: termRelation
-	(self = anObject)
+	anObject isMetaVariable
+		ifTrue: [^ termRelation union: self with: anObject].
+
+	^ (self = anObject)
 		ifTrue: [termRelation union: self with: anObject]
 		ifFalse: ["s ~= t" UnificationFailure signal]! !
 
@@ -37,11 +40,10 @@ unificationClosureWith: anObject in: termRelation
 unificationClosureWithAlgebraic: anObject in: termRelation
 	UnificationFailure signal.! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
-unifyWith: anObject
-	^ Unifier unify: self with: anObject.! !
-l.! !
-
 !Object methodsFor: '*Unification' stamp: 'fbs 1/2/2012 20:22'!
 unificationClosureWithVariable: aMetaVariable in: termRelation
 	^ termRelation union: aMetaVariable with: self.! !
+
+!Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
+unifyWith: anObject
+	^ Unifier unify: self with: anObject.! !

@@ -19,20 +19,16 @@ left: leftObject right: rightObject
 	right := rightObject.! !
 
 
+!OrUnifier methodsFor: '*Unification' stamp: 'fbs 1/4/2012 20:31'!
+unificationClosureWithAlgebraic: anObject in: termRelation
+	[^ anObject unificationClosureWithAlgebraic: left in: termRelation]
+		on: UnificationFailure do:
+			[^ anObject unificationClosureWithAlgebraic: right in: termRelation]! !
+
 !OrUnifier methodsFor: '*Unification' stamp: 'fbs 8/9/2011 07:36'!
 unifyWith: anObject
 	[^ left unifyWith: anObject]
 		on: UnificationFailure do: [^ right unifyWith: anObject].! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-OrUnifier class
-	instanceVariableNames: ''!
-
-!OrUnifier class methodsFor: 'instance creation' stamp: 'fbs 8/8/2011 22:33'!
-left: leftObject right: rightObject
-	^ self new left: leftObject right: rightObject.! !
-ght unifyWith: anObject].! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 

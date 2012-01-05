@@ -9,11 +9,11 @@ I attempt to unify two structures, that is, find mappings between the MetaVariab
 I return a Dictionary containing the most general unifier (which might be empty if the two structures are identical), or I raise a UnificationFailure.!
 
 
-!Unifier methodsFor: 'evaluating' stamp: 'fbs 5/28/2011 19:53'!
+!Unifier methodsFor: 'evaluating' stamp: 'fbs 1/4/2012 20:26'!
 unify: s with: t
-	termRelation := TermRelation new.
-	(termRelation classFor: s) unificationClosureWith: (termRelation classFor: t) in: termRelation.
-	^ (termRelation classFor: s) findSolutionWithUnifier: Dictionary new in: termRelation.! !
+	termRelation := VariableTrackingUnionFind usingArrayType: PersistentCollection partitioning: Dictionary new.
+	termRelation := (termRelation find: s) unificationClosureWith: (termRelation find: t) in: termRelation.
+	^ SolutionFinder findSolutionFor: termRelation starting: s.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 

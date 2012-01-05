@@ -1,12 +1,11 @@
 
-!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 5/30/2011 20:20'!
-findSolutionWithUnifier: aDictionary in: termRelation
+!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 1/4/2012 11:31'!
+findSolutionWithUnifier: anMGU in: solutionFinder
 	| newUnifier |
-	newUnifier := aDictionary copy.
+	newUnifier := anMGU copy.
 	self children do:
 		[:each | | d |
-		d := (termRelation classFor: each)
-			findSolutionWithUnifier: newUnifier in: termRelation.
+		d := solutionFinder findSolution: each using: anMGU.
 		newUnifier addAll: d].
 	^ newUnifier.! !
 
@@ -18,14 +17,20 @@ isMetaVariable
 or: anObject
 	^ OrUnifier left: self right: anObject! !
 
-!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:51'!
+!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 1/4/2012 20:20'!
 unificationClosureWith: anObject in: termRelation
-	anObject unificationClosureWithAlgebraic: self in: termRelation.! !
+	anObject isMetaVariable
+		ifTrue: [^ termRelation union: self with: anObject].
 
-!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:54'!
+	^ anObject unificationClosureWithAlgebraic: self in: termRelation.! !
+
+!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 12/30/2011 22:14'!
 unificationClosureWithAlgebraic: anObject in: termRelation
 	"s = f(s1, ..., sm), t = g(t1, ..., tn) where m, n > 0"
+	| partition |
 	(self type = anObject type) ifFalse: [UnificationFailure signal. "f ~= g"].
 	(self arity = anObject arity) ifFalse: [UnificationFailure signal. "m ~= n"].
+	partition := termRelation.
 	self children with: anObject children do:
-		[:si :ti | (termRelation classFor: si) unificationClosureWith: (termRelation classFor: ti) in: termRelation].! !
+		[:si :ti | partition := (partition find: si) unificationClosureWith: (partition find: ti) in: partition].
+	^ partition.! !
