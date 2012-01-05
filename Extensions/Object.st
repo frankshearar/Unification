@@ -40,6 +40,10 @@ unificationClosureWith: anObject in: termRelation
 unificationClosureWithAlgebraic: anObject in: termRelation
 	UnificationFailure signal.! !
 
+!Object methodsFor: '*Unification' stamp: 'fbs 1/4/2012 21:34'!
+unificationClosureWithSequence: aSequence in: termRelation
+	UnificationFailure signal.! !
+
 !Object methodsFor: '*Unification' stamp: 'fbs 1/2/2012 20:22'!
 unificationClosureWithVariable: aMetaVariable in: termRelation
 	^ termRelation union: aMetaVariable with: self.! !
