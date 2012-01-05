@@ -66,7 +66,7 @@ findSolutionWithUnifier: aDictionary in: termRelation
 		ifTrue: [self privFindSolutionWithUnifier: aDictionary in: termRelation]
 		ifFalse: [self findRepresentative schemaTerm findSolutionWithUnifier: aDictionary in: termRelation]! !
 
-!UnificationEquivalenceClass methodsFor: 'unification' stamp: 'fbs 5/30/2011 20:21'!
+!UnificationEquivalenceClass methodsFor: 'unification' stamp: 'fbs 10/6/2011 22:12'!
 privFindSolutionWithUnifier: aDictionary in: termRelation
 	"Assume that we are the schema term for our equivalence class."
 	| newUnifier |
@@ -76,8 +76,7 @@ privFindSolutionWithUnifier: aDictionary in: termRelation
 
 	newUnifier := aDictionary copy.	
 	visited := true.
-	(node isAlgebraic) ifTrue:
-		[newUnifier addAll: (node findSolutionWithUnifier: newUnifier in: termRelation)].
+	newUnifier addAll: (node findSolutionWithUnifier: newUnifier in: termRelation).
 	visited := false.
 	
 	acyclic := true.
@@ -134,3 +133,4 @@ UnificationEquivalenceClass class
 !UnificationEquivalenceClass class methodsFor: 'instance creation' stamp: 'fbs 5/25/2011 21:16'!
 decorate: anObject
 	^ self new decorate: anObject.! !
+elf new decorate: anObject.! !

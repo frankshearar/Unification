@@ -1,4 +1,12 @@
 
+!Object methodsFor: '*Unification' stamp: 'fbs 10/7/2011 07:43'!
+=? anObject
+	^ self unifyWith: anObject.! !
+
+!Object methodsFor: '*Unification' stamp: 'fbs 10/6/2011 22:12'!
+findSolutionWithUnifier: newUnifier in: termRelation
+	^ newUnifier.! !
+
 !Object methodsFor: '*Unification' stamp: 'fbs 5/25/2011 22:33'!
 isMetaVariable
 	^ false.! !
@@ -32,15 +40,7 @@ unificationClosureWithAlgebraic: anObject in: termRelation
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
 	^ Unifier unify: self with: anObject.! !
-p: 'fbs 5/26/2011 20:42'!
-unifyWith: anObject
-	^ Unifier unify: self with: anObject.! !
-self with: anObject.! !
-fy: self with: anObject.! !
- stamp: 'fbs 5/26/2011 20:42'!
-unifyWith: anObject
-	^ Unifier unify: self with: anObject.! !
-nFailure signal.! !
+l.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 1/2/2012 20:22'!
 unificationClosureWithVariable: aMetaVariable in: termRelation
