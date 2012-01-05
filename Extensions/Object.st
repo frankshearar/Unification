@@ -3,6 +3,28 @@
 isMetaVariable
 	^ false.! !
 
+!Object methodsFor: '*Unification' stamp: 'fbs 7/23/2011 11:25'!
+matchOneOf: aBlockAssociationCollection
+	"The elements of aBlockAssociationCollection are associations between blocks.
+	 Answer the evaluated value of the first association in aBlockAssociationCollection
+	 whose evaluated key unifies with the receiver.  If no match is found, report an error."
+
+	^ self matchOneOf: aBlockAssociationCollection otherwise: [self caseError].! !
+
+!Object methodsFor: '*Unification' stamp: 'fbs 7/22/2011 08:43'!
+matchOneOf: aBlockAssociationCollection otherwise: aBlock
+	"The elements of aBlockAssociationCollection are associations between blocks.
+	 Answer the evaluated value of the first association in aBlockAssociationCollection
+	 whose evaluated key unifies with the receiver.  If no match is found, answer the result
+	 of evaluating aBlock."
+	| mgu |
+	aBlockAssociationCollection associationsDo:
+		[:assoc |
+			[mgu := assoc key value =? self.
+			mgu isEmpty
+				ifFalse: [^ assoc value cull: mgu]] on: UnificationFailure do: ["nothing"]].
+	^ aBlock value! !
+
 !Object methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:45'!
 unificationClosureWith: anObject in: termRelation
 	(self = anObject)
@@ -17,30 +39,7 @@ unificationClosureWithAlgebraic: anObject in: termRelation
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
 	^ Unifier unify: self with: anObject.! !
-ation' stamp: 'fbs 8/8/2011 19:07'!
-matchOneOf: someAssociations otherwise: aBlock
-	"The elements of aBlockAssociationCollection are associations between blocks.
-	 Answer the evaluated value of the first association in aBlockAssociationCollection
-	 whose evaluated key unifies with the receiver.  If no match is found, answer the result
-	 of evaluating aBlock."
-	^ (UnificationMatcher matcherUsing: someAssociations otherwise: aBlock) match: self.! !
-
-!Object methodsFor: '*Unification' stamp: 'fbs 1/3/2012 15:28'!
-unificationClosureWith: anObject in: termRelation
-	anObject isMetaVariable
-		ifTrue: [^ termRelation union: self with: anObject].
-
-	^ (self = anObject)
-		ifTrue: [termRelation union: self with: anObject]
-		ifFalse: ["s ~= t" UnificationFailure signal]! !
-
-!Object methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:50'!
-unificationClosureWithAlgebraic: anObject in: termRelation
-	UnificationFailure signal.! !
-
-!Object methodsFor: '*Unification' stamp: 'fbs 1/4/2012 21:34'!
-unificationClosureWithSequence: aSequence in: termRelation
-	UnificationFailure signal.! !
+nFailure signal.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 1/2/2012 20:22'!
 unificationClosureWithVariable: aMetaVariable in: termRelation
