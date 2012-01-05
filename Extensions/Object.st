@@ -11,13 +11,13 @@ matchOneOf: aBlockAssociationCollection
 
 	^ self matchOneOf: aBlockAssociationCollection otherwise: [self caseError].! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 7/28/2011 14:38'!
-matchOneOf: aBlockAssociationCollection otherwise: aBlock
+!Object methodsFor: '*Unification' stamp: 'fbs 7/30/2011 21:18'!
+matchOneOf: someAssociation otherwise: aBlock
 	"The elements of aBlockAssociationCollection are associations between blocks.
 	 Answer the evaluated value of the first association in aBlockAssociationCollection
 	 whose evaluated key unifies with the receiver.  If no match is found, answer the result
 	 of evaluating aBlock."
-	aBlockAssociationCollection associationsDo:
+	someAssociation associationsDo:
 		[:assoc | | mgu |
 			[mgu := assoc key value =? self.
 			^ assoc value cull: mgu] on: UnificationFailure do: ["nothing"]].
@@ -36,6 +36,7 @@ unificationClosureWithAlgebraic: anObject in: termRelation
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
 	^ Unifier unify: self with: anObject.! !
+self with: anObject.! !
 fy: self with: anObject.! !
  stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
