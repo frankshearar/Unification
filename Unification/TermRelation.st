@@ -18,3 +18,9 @@ classFor: anObject
 initialize
 	super initialize.
 	map := Dictionary new.! !
+
+
+!TermRelation methodsFor: 'as yet unclassified' stamp: 'fbs 7/26/2011 21:44'!
+union: thisObject with: thatObject
+	(self classFor: thisObject) findRepresentative schemaTerm
+			union: (self classFor: thatObject) findRepresentative schemaTerm! !

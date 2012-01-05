@@ -25,11 +25,10 @@ matchOneOf: aBlockAssociationCollection otherwise: aBlock
 				ifFalse: [^ assoc value cull: mgu]] on: UnificationFailure do: ["nothing"]].
 	^ aBlock value! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:45'!
+!Object methodsFor: '*Unification' stamp: 'fbs 7/26/2011 21:44'!
 unificationClosureWith: anObject in: termRelation
 	(self = anObject)
-		ifTrue: [(termRelation classFor: self) findRepresentative schemaTerm
-			union: (termRelation classFor: anObject) findRepresentative schemaTerm]
+		ifTrue: [termRelation union: self with: anObject]
 		ifFalse: ["s ~= t" UnificationFailure signal]! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:50'!
@@ -37,6 +36,9 @@ unificationClosureWithAlgebraic: anObject in: termRelation
 	UnificationFailure signal.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
+unifyWith: anObject
+	^ Unifier unify: self with: anObject.! !
+ stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
 	^ Unifier unify: self with: anObject.! !
 nFailure signal.! !
