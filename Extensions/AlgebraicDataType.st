@@ -14,6 +14,10 @@ findSolutionWithUnifier: aDictionary in: termRelation
 isMetaVariable
 	^ self unapply first = #Variable.! !
 
+!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 8/9/2011 07:32'!
+or: anObject
+	^ OrUnifier left: self right: anObject! !
+
 !AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:51'!
 unificationClosureWith: anObject in: termRelation
 	anObject unificationClosureWithAlgebraic: self in: termRelation.! !
