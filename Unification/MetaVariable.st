@@ -7,6 +7,17 @@ Object subclass: #MetaVariable
 A MetaVariable is a reified variable, that is, an object representing a variable. It is a placeholder in a structure that says "we don't know what the value is of this part of the structure, but we can give it a name."!
 
 
+!MetaVariable methodsFor: 'comparing' stamp: 'fbs 1/4/2012 20:33'!
+= anObject
+	^ anObject isMetaVariable and: [name = anObject name]! !
+
+!MetaVariable methodsFor: 'comparing' stamp: 'fbs 1/4/2012 20:34'!
+hash
+	"17's a prime."
+	"Implementation copied from AlgebraicDataType >> #hash."
+	^ self unapply inject: 17 into: [:acc :each | 17 * each hash].! !
+
+
 !MetaVariable methodsFor: 'accessing' stamp: 'fbs 5/24/2011 22:06'!
 children
 	^ #().! !
@@ -31,28 +42,17 @@ name: aSymbol
 	name := aSymbol.! !
 
 
-!MetaVariable methodsFor: 'destructuring' stamp: 'fbs 5/24/2011 07:34'!
-unapply
-	^ {#Variable. name.}! !
-
-
-!MetaVariable methodsFor: 'comparing' stamp: 'fbs 1/4/2012 20:33'!
-= anObject
-	^ anObject isMetaVariable and: [name = anObject name]! !
-
-!MetaVariable methodsFor: 'comparing' stamp: 'fbs 1/4/2012 20:34'!
-hash
-	"17's a prime."
-	"Implementation copied from AlgebraicDataType >> #hash."
-	^ self unapply inject: 17 into: [:acc :each | 17 * each hash].! !
-
-
 !MetaVariable methodsFor: 'printing' stamp: 'fbs 1/4/2012 20:17'!
 printOn: aStream
 	aStream nextPut: $(.
 	aStream nextPutAll: ((self unapply collect: [:token | token printString])
 		reduce: [:acc :each | acc , ' ', each]).
 	aStream nextPut: $).! !
+
+
+!MetaVariable methodsFor: 'destructuring' stamp: 'fbs 5/24/2011 07:34'!
+unapply
+	^ {#Variable. name.}! !
 
 
 !MetaVariable methodsFor: 'unification' stamp: 'fbs 1/3/2012 15:30'!

@@ -32,31 +32,29 @@ match: anObject
 		ifTrue: [otherwise value]
 		ifFalse: [result].! !
 
-!UnificationMatcher methodsFor: 'applying' stamp: 'fbs 8/8/2011 22:10'!
-matchNaive: anObject
-	"Iterate through the cases. As we evaluate the thunks, replace them with the thunks' values."
-	cases associationsDo:
-		[:assoc | | mgu |
-			[mgu := assoc key value =? anObject.
-			^ assoc value cull: mgu] on: UnificationFailure do: ["nothing"]].
-	^ otherwise value.! !
 
-
-!UnificationMatcher methodsFor: 'initialize-release' stamp: 'fbs 7/28/2011 22:39'!
+!UnificationMatcher methodsFor: 'initialize-release' stamp: 'fbs 1/8/2012 22:05'!
 matcherUsing: aBlockAssociationCollection
-	cases := aBlockAssociationCollection asOrderedCollection.
-	otherwise := [self caseError].! !
+	self matcherUsing: aBlockAssociationCollection otherwise: [self caseError].! !
 
 !UnificationMatcher methodsFor: 'initialize-release' stamp: 'fbs 8/8/2011 22:22'!
 matcherUsing: aBlockAssociationCollection otherwise: aBlock
 	cases := aBlockAssociationCollection asOrderedCollection.
 	otherwise := aBlock.! !
 
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!UnificationMatcher methodsFor: 'private' stamp: 'fbs 8/8/2011 21:45'!
-replace: key with: newKey in: dictionary
-	| newAssocs |
-	newAssocs := OrderedCollection new.
+UnificationMatcher class
+	instanceVariableNames: ''!
+
+!UnificationMatcher class methodsFor: 'instance creation' stamp: 'fbs 7/28/2011 22:29'!
+matcherUsing: aBlockAssociationCollection
+	^ self new matcherUsing: aBlockAssociationCollection.! !
+
+!UnificationMatcher class methodsFor: 'instance creation' stamp: 'fbs 7/28/2011 22:14'!
+matcherUsing: aBlockAssociationCollection otherwise: aBlock
+	^ self new matcherUsing: aBlockAssociationCollection otherwise: aBlock.! !
+edCollection new.
 	dictionary associationsDo: [:k :v |
 		newAssocs
 			add: (k = key ifTrue: [newKey] ifFalse: [k]);
