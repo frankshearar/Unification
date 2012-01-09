@@ -4,11 +4,18 @@ TestCase subclass: #MatchingTest
 	poolDictionaries: ''
 	category: 'Unification-Tests'!
 
-!MatchingTest methodsFor: 'helpers' stamp: 'fbs 7/22/2011 07:55'!
+!MatchingTest methodsFor: 'helpers' stamp: 'fbs 1/9/2012 09:38'!
 assert: left equals: right description: msg
 	self
 		assert: left = right
-		description: ('{1} , expected {2}, got {3}' format: {msg. left printString. right printString.}).! !
+		description: ('{1}, expected {2}, got {3}' format: {msg. left printString. right printString.}).! !
+
+
+!MatchingTest methodsFor: 'testing - helpers' stamp: 'fbs 1/9/2012 09:38'!
+testAssertEqualsDescriptionGivesMeaningfulErrorMessage
+	[self assert: 1 equals: 2 description: 'Fail!!'] on: TestFailure do:
+		[ :failure |
+		self assert: 'Fail!!, expected 1, got 2' equals: failure messageText].! !
 
 
 !MatchingTest methodsFor: 'testing - matching' stamp: 'fbs 7/28/2011 14:18'!

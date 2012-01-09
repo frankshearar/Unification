@@ -19,9 +19,9 @@ testDifferentArityTermsShouldNotUnify
 	self should: [f unifyWith: g] raise: UnificationFailure.! !
 
 
-!UnificationOfAlgebraicDataTypeTest methodsFor: 'testing - collection unification' stamp: 'fbs 1/9/2012 09:15'!
-testNormalObjectsCantUnifyWithAlgebraicDataTypes
-	self should: [(Leaf value: 1) =? #(Leaf 1)] raise: UnificationFailure.! !
+!UnificationOfAlgebraicDataTypeTest methodsFor: 'testing - collection unification' stamp: 'fbs 1/9/2012 09:34'!
+testUnappliedAlgebraicDataTypesCantUnifyWithAlgebraicDataTypes
+	self shouldnt: [ (Leaf value: 1) =? #(Leaf 1) ] raise: UnificationFailure.! !
 
 !UnificationOfAlgebraicDataTypeTest methodsFor: 'testing - collection unification' stamp: 'fbs 1/5/2012 09:25'!
 testUnificationWithCollectionsWorksBidirectionally

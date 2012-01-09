@@ -36,9 +36,9 @@ unificationClosureWith: anObject in: termRelation
 		ifTrue: [termRelation union: self with: anObject]
 		ifFalse: ["s ~= t" UnificationFailure signal]! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 6/2/2011 13:50'!
+!Object methodsFor: '*Unification' stamp: 'fbs 1/9/2012 09:28'!
 unificationClosureWithAlgebraic: anObject in: termRelation
-	UnificationFailure signal.! !
+	^ self unificationClosureWithSequence: anObject unapply in: termRelation.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 1/4/2012 21:34'!
 unificationClosureWithSequence: aSequence in: termRelation
@@ -47,7 +47,7 @@ unificationClosureWithSequence: aSequence in: termRelation
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
 	^ Unifier unify: self with: anObject.! !
-	^ termRelation union: aMetaVariable with: self.! !
+.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
