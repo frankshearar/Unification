@@ -3,6 +3,13 @@ DestructuringUnifier subclass: #ListUnifier
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Unification-Destructuring'!
+!ListUnifier commentStamp: 'fbs 1/11/2012 18:53' prior: 0!
+I destructure a (sequenceable) collection into a head and a tail. For instance,
+
+    ListUnifier headNamed: #h tailNamed: #t =? #(1 2 3)
+
+unifies h with 1 and t with #(2 3).!
+
 
 
 !ListUnifier methodsFor: 'private' stamp: 'fbs 10/13/2011 07:35'!
@@ -48,6 +55,14 @@ ListUnifier class
 !ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:35'!
 head: anObject tail: anotherObject
 	^ self new head: anObject tail: anotherObject.! !
+
+!ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 19:02'!
+head: anObject tailNamed: tailSymbol
+	^ self new head: anObject tail: tailSymbol asVariable.! !
+
+!ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 19:01'!
+headNamed: headSymbol tail: anObject
+	^ self new head: headSymbol asVariable tail: anObject.! !
 
 !ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:36'!
 headNamed: headSymbol tailNamed: tailSymbol

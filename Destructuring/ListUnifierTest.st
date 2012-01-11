@@ -4,7 +4,6 @@ TestCase subclass: #ListUnifierTest
 	poolDictionaries: ''
 	category: 'Unification-Tests-Destructuring'!
 
-
 !ListUnifierTest methodsFor: 'extensions' stamp: 'fbs 1/10/2012 09:27'!
 testCantUnifyWithNormalObjects
 	self should: [1 =? (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
@@ -53,3 +52,35 @@ testUnifyWithSingleElementCollectionRespectsCollectionType
 	mgu := (ListUnifier headNamed: #x tailNamed: #y) =? (OrderedCollection with: 1).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: OrderedCollection new equals: (mgu at: #y asVariable).! !
+
+
+
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:01'!
+testHeadNamedTailNamedReturnsListUnifier
+	| l mgu |
+	l := ListUnifier headNamed: #x tailNamed: #y.
+	mgu := l =? #(1 2 3).
+	self assert: 1 equals: (mgu at: #x asVariable).
+	self assert: #(2 3) equals: (mgu at: #y asVariable).! !
+
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:01'!
+testHeadNamedTailReturnsListUnifier
+	| l mgu |
+	l := ListUnifier headNamed: #x tail: #(2 3).
+	mgu := l =? #(1 2 3).
+	self assert: 1 equals: (mgu at: #x asVariable).! !
+
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:02'!
+testHeadTailNamedReturnsListUnifier
+	| l mgu |
+	l := ListUnifier head: 1 tailNamed: #x.
+	mgu := l =? #(1 2 3).
+	self assert: #(2 3) equals: (mgu at: #x asVariable).! !
+
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:00'!
+testHeadTailReturnsListUnifier
+	| l mgu |
+	l := ListUnifier head: #x asVariable tail: #y asVariable.
+	mgu := l =? #(1 2 3).
+	self assert: 1 equals: (mgu at: #x asVariable).
+	self assert: #(2 3) equals: (mgu at: #y asVariable).! !

@@ -20,7 +20,7 @@ findSolutionWithUnifier: anMGU in: solutionFinder
 	newUnifier addAll: d.
 	^ newUnifier.! !
 
-!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/9/2012 19:09'!
+!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 18:41'!
 unificationClosureWith: anObject in: termRelation
 	anObject isMetaVariable
 		ifTrue: [^ termRelation union: self with: anObject].
@@ -28,13 +28,17 @@ unificationClosureWith: anObject in: termRelation
 		ifFalse: [^ UnificationFailure signal].
 	anObject isEmpty
 		ifTrue: [^ UnificationFailure signal].
-	^ value unificationClosureWith: anObject first in: termRelation.! !
+	^ self matchAgainst: anObject in: termRelation.! !
 
-!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/9/2012 20:38'!
+!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 18:42'!
 unificationClosureWithSequence: aSequence in: termRelation
 	aSequence ifEmpty: [^ UnificationFailure signal].
-	^ value unificationClosureWith: aSequence first in: termRelation.! !
+	^ self matchAgainst: aSequence in: termRelation.! !
 
+
+!HeadUnifier methodsFor: 'private' stamp: 'fbs 1/11/2012 18:42'!
+matchAgainst: aCollection in: termRelation
+	^ value unificationClosureWith: aCollection first in: termRelation.! !
 
 !HeadUnifier methodsFor: 'private' stamp: 'fbs 10/13/2011 07:31'!
 value: anObject
@@ -52,3 +56,7 @@ named: aSymbol
 !HeadUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:31'!
 value: anObject
 	^ self new value: anObject.! !
+
+!HeadUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 14:01'!
+values: someObjects
+	^ MultiHeadUnifier new values: someObjects.! !

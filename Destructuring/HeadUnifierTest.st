@@ -4,6 +4,20 @@ TestCase subclass: #HeadUnifierTest
 	poolDictionaries: ''
 	category: 'Unification-Tests-Destructuring'!
 
+!HeadUnifierTest methodsFor: 'testing' stamp: 'fbs 1/11/2012 14:03'!
+testCanUnifyAgainstFirstNWhenLeftOperand
+	| mgu |
+	mgu := (HeadUnifier values: {#x asVariable. #y asVariable}) =? #(1 2 3).
+	self assert: 1 equals: (mgu at: #x asVariable).
+	self assert: 2 equals: (mgu at: #y asVariable).! !
+
+!HeadUnifierTest methodsFor: 'testing' stamp: 'fbs 1/11/2012 14:03'!
+testCanUnifyAgainstFirstNWhenRightOperand
+	| mgu |
+	mgu := #(1 2 3) =? (HeadUnifier values: {#x asVariable. #y asVariable}).
+	self assert: 1 equals: (mgu at: #x asVariable).
+	self assert: 2 equals: (mgu at: #y asVariable).! !
+
 !HeadUnifierTest methodsFor: 'testing' stamp: 'fbs 1/10/2012 09:45'!
 testHeadCantUnifyWithNormalObjects
 	self should: [1 =? (HeadUnifier named: #x)] raise: UnificationFailure.
@@ -23,6 +37,12 @@ testPipeConstructsaListUnifier
 testUnifyingWithCollectionUnifiesOnFirstElement
 	| mgu |
 	mgu := (HeadUnifier named: #x) =? #(1 2 3).
+	self assert: 1 equals: (mgu at: #x asVariable).! !
+
+!HeadUnifierTest methodsFor: 'testing' stamp: 'fbs 1/11/2012 13:59'!
+testUnifyingWithCollectionUnifiesOnFirstElementWhenCollection
+	| mgu |
+	mgu := (HeadUnifier value: {#x asVariable}) =? #((1) 2 3).
 	self assert: 1 equals: (mgu at: #x asVariable).! !
 
 !HeadUnifierTest methodsFor: 'testing' stamp: 'fbs 1/10/2012 09:45'!
