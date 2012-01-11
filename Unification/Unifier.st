@@ -9,11 +9,13 @@ I attempt to unify two structures, that is, find mappings between the MetaVariab
 I return a Dictionary containing the most general unifier (which might be empty if the two structures are identical), or I raise a UnificationFailure.!
 
 
-!Unifier methodsFor: 'evaluating' stamp: 'fbs 1/4/2012 20:26'!
+!Unifier methodsFor: 'evaluating' stamp: 'fbs 1/11/2012 09:19'!
 unify: s with: t
 	termRelation := VariableTrackingUnionFind usingArrayType: PersistentCollection partitioning: Dictionary new.
 	termRelation := (termRelation find: s) unificationClosureWith: (termRelation find: t) in: termRelation.
-	^ SolutionFinder findSolutionFor: termRelation starting: s.! !
+	"The original algorithm from Baader & Synder's _Unification Theory_ shows finding the solution starting only from s. However, ListUnifier unifies on an artificial node - a node that we construct and does not itself appear in either s or t. Thus we merge the partial solutions found by starting from a representative of each of the equivalence classes in the partition."
+	^ termRelation inject: MostGeneralUnifier new into:
+		[:mgu :node | mgu copy addAll: (SolutionFinder findSolutionFor: termRelation starting: node); yourself]! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 

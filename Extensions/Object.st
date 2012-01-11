@@ -27,27 +27,26 @@ matchOneOf: someAssociations otherwise: aBlock
 	 of evaluating aBlock."
 	^ (UnificationMatcher matcherUsing: someAssociations otherwise: aBlock) match: self.! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 1/3/2012 15:28'!
+!Object methodsFor: '*Unification' stamp: 'fbs 1/9/2012 18:54'!
 unificationClosureWith: anObject in: termRelation
 	anObject isMetaVariable
 		ifTrue: [^ termRelation union: self with: anObject].
 
-	^ (self = anObject)
-		ifTrue: [termRelation union: self with: anObject]
-		ifFalse: ["s ~= t" UnificationFailure signal]! !
+	^ anObject unificationClosureWithObject: self in: termRelation.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 1/9/2012 09:28'!
 unificationClosureWithAlgebraic: anObject in: termRelation
 	^ self unificationClosureWithSequence: anObject unapply in: termRelation.! !
 
+!Object methodsFor: '*Unification' stamp: 'fbs 1/9/2012 18:51'!
+unificationClosureWithObject: anObject in: termRelation
+	^ (self = anObject)
+		ifTrue: [termRelation union: self with: anObject]
+		ifFalse: ["s ~= t" UnificationFailure signal]! !
+
 !Object methodsFor: '*Unification' stamp: 'fbs 1/4/2012 21:34'!
 unificationClosureWithSequence: aSequence in: termRelation
 	UnificationFailure signal.! !
-
-!Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
-unifyWith: anObject
-	^ Unifier unify: self with: anObject.! !
-.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
