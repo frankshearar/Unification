@@ -14,7 +14,7 @@ I return a Dictionary containing the most general unifier (which might be empty 
 Unifier class
 	instanceVariableNames: ''!
 
-!Unifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 19:06'!
+!Unifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 22:38'!
 unify: left with: right
 	| partition |
 	partition := VariableTrackingUnionFind
@@ -22,8 +22,8 @@ unify: left with: right
 		partitioning: Dictionary new.
 	partition := (partition find: left)
 		unificationClosureWith: (partition find: right) in: partition.
-
-	"The original algorithm from Baader & Synder's _Unification Theory_ shows finding the solution starting only from s. However, ListUnifier unifies on an artificial node - a node that we construct and does not itself appear in either s or t. Thus we merge the partial solutions found by starting from a representative of each of the equivalence classes in the partition."
+	^ SolutionFinder findSolutionFor: partition.! !
+_Unification Theory_ shows finding the solution starting only from s. However, ListUnifier unifies on an artificial node - a node that we construct and does not itself appear in either s or t. Thus we merge the partial solutions found by starting from a representative of each of the equivalence classes in the partition."
 	^ partition inject: MostGeneralUnifier new into:
 		[:mgu :node | mgu copy addAll: (SolutionFinder findSolutionFor: partition starting: node); yourself]! !
 methodsFor: 'instance creation' stamp: 'fbs 5/25/2011 07:12'!

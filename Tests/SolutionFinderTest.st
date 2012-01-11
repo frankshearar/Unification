@@ -15,8 +15,9 @@ makePartition
 	^ partition.! !
 
 
-!SolutionFinderTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/5/2012 09:29'!
+!SolutionFinderTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 22:43'!
 testCanCreateFinder
 	| partition |
 	partition := self makePartition.
-	SolutionFinder findSolutionFor: partition starting: 1.! !
+	SolutionFinder findSolutionFor: partition.! !
+ing: 1.! !
