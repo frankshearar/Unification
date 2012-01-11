@@ -12,11 +12,14 @@ testAnythingCanUnifyAgainstMetaVariables
 	self shouldnt: [#() =? #x asVariable] raise: UnificationFailure.
 	self shouldnt: [Object new =? #x asVariable] raise: UnificationFailure.! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/4/2012 22:16'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/11/2012 22:09'!
 testCyclicStructuresCantUnify
 	| y |
 	y := MetaVariable named: #y.
-	self should: [y unifyWith: {y}] raise: UnificationFailure.! !
+	self should: [y unifyWith: {y}] raise: UnificationFailure.
+	[y unifyWith: {y}]
+		on: UnificationCycleFailure
+		do: [:e | self assert: {y} equals: e cyclicTerm].! !
 
 !UnificationTest methodsFor: 'testing' stamp: 'fbs 1/4/2012 22:16'!
 testImpossibleUnificationShouldNotUnify

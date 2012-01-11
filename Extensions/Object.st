@@ -3,6 +3,10 @@
 =? anObject
 	^ self unifyWith: anObject.! !
 
+!Object methodsFor: '*Unification' stamp: 'fbs 1/11/2012 20:33'!
+failToUnifyWith: anObject
+	UnificationFailure signalThis: self that: anObject.! !
+
 !Object methodsFor: '*Unification' stamp: 'fbs 1/4/2012 11:32'!
 findSolutionWithUnifier: anMGU in: solutionFinder
 	^ anMGU.! !
@@ -38,15 +42,15 @@ unificationClosureWith: anObject in: termRelation
 unificationClosureWithAlgebraic: anObject in: termRelation
 	^ self unificationClosureWithSequence: anObject unapply in: termRelation.! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 1/9/2012 18:51'!
+!Object methodsFor: '*Unification' stamp: 'fbs 1/11/2012 19:17'!
 unificationClosureWithObject: anObject in: termRelation
 	^ (self = anObject)
 		ifTrue: [termRelation union: self with: anObject]
-		ifFalse: ["s ~= t" UnificationFailure signal]! !
+		ifFalse: ["s ~= t" self failToUnifyWith: anObject]! !
 
-!Object methodsFor: '*Unification' stamp: 'fbs 1/4/2012 21:34'!
+!Object methodsFor: '*Unification' stamp: 'fbs 1/11/2012 19:18'!
 unificationClosureWithSequence: aSequence in: termRelation
-	UnificationFailure signal.! !
+	^ self failToUnifyWith: aSequence.! !
 
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject

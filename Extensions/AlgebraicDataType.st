@@ -24,12 +24,12 @@ unificationClosureWith: anObject in: termRelation
 
 	^ anObject unificationClosureWithAlgebraic: self in: termRelation.! !
 
-!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 12/30/2011 22:14'!
+!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 1/11/2012 20:16'!
 unificationClosureWithAlgebraic: anObject in: termRelation
 	"s = f(s1, ..., sm), t = g(t1, ..., tn) where m, n > 0"
 	| partition |
-	(self type = anObject type) ifFalse: [UnificationFailure signal. "f ~= g"].
-	(self arity = anObject arity) ifFalse: [UnificationFailure signal. "m ~= n"].
+	(self type = anObject type) ifFalse: [^ self failToUnifyWith: anObject. "f ~= g"].
+	(self arity = anObject arity) ifFalse: [^ self failToUnifyWith: anObject. "m ~= n"].
 	partition := termRelation.
 	self children with: anObject children do:
 		[:si :ti | partition := (partition find: si) unificationClosureWith: (partition find: ti) in: partition].

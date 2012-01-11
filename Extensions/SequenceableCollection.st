@@ -16,10 +16,10 @@ unificationClosureWith: anObject in: termRelation
 		
 	^ anObject unificationClosureWithSequence: self in: termRelation.! !
 
-!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/3/2012 16:14'!
+!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/11/2012 19:18'!
 unificationClosureWithSequence: aCollection in: termRelation
 	| rel |
-	(self size = aCollection size) ifFalse: [UnificationFailure signal].
+	(self size = aCollection size) ifFalse: [^ self failToUnifyWith: aCollection].
 	rel := termRelation.
 	self with: aCollection do:
 		[:si :ti | rel := (rel find: si) unificationClosureWith: (rel find: ti) in: rel].

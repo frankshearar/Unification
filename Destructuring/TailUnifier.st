@@ -15,19 +15,19 @@ findSolutionWithUnifier: anMGU in: solutionFinder
 	newUnifier addAll: d.
 	^ newUnifier.! !
 
-!TailUnifier methodsFor: 'unification' stamp: 'fbs 1/9/2012 19:10'!
+!TailUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 19:20'!
 unificationClosureWith: anObject in: termRelation
 	anObject isMetaVariable
 		ifTrue: [^ termRelation union: self with: anObject].
 	anObject isCollection
-		ifFalse: [^ UnificationFailure signal].
+		ifFalse: [^ self failToUnifyWith: anObject].
 	anObject isEmpty
-		ifTrue: [^ UnificationFailure signal].
+		ifTrue: [^ self failToUnifyWith: anObject].
 	^ value unificationClosureWith: anObject allButFirst in: termRelation.! !
 
-!TailUnifier methodsFor: 'unification' stamp: 'fbs 1/9/2012 20:38'!
+!TailUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 19:20'!
 unificationClosureWithSequence: aSequence in: termRelation
-	aSequence ifEmpty: [^ UnificationFailure signal].
+	aSequence ifEmpty: [^ self failToUnifyWith: aSequence].
 	^ value unificationClosureWith: aSequence allButFirst in: termRelation.! !
 
 

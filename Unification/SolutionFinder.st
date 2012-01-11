@@ -7,12 +7,12 @@ Object subclass: #SolutionFinder
 Given an equivalence relation (partition) on some set of nodes, each class potentially containing one or more MetaVariables, construct a MostGeneralUnifier.!
 
 
-!SolutionFinder methodsFor: 'private' stamp: 'fbs 1/4/2012 14:23'!
+!SolutionFinder methodsFor: 'private' stamp: 'fbs 1/11/2012 20:08'!
 findSolution: anObject using: anMGU
 	| newUnifier schemaTerm |
 	schemaTerm := partition find: anObject.
 	(acyclic includes: schemaTerm) ifTrue: [^ anMGU "s is not part of a cycle."].
-	(visited includes: schemaTerm) ifTrue: [UnificationFailure signal. "Cycle detected."].
+	(visited includes: schemaTerm) ifTrue: [^ UnificationCycleFailure signalCycleOn: schemaTerm. "Cycle detected."].
 	
 	newUnifier := anMGU copy.
 	visited add: schemaTerm.
