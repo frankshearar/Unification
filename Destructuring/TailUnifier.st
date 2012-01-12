@@ -7,13 +7,9 @@ DestructuringUnifier subclass: #TailUnifier
 I represent the tail (or rest) of an OrderedCollection.!
 
 
-!TailUnifier methodsFor: 'unification' stamp: 'fbs 1/9/2012 19:12'!
+!TailUnifier methodsFor: 'unification' stamp: 'fbs 1/12/2012 09:40'!
 findSolutionWithUnifier: anMGU in: solutionFinder
-	| d newUnifier |
-	newUnifier := anMGU copy.
-	d := solutionFinder findSolution: value using: anMGU.
-	newUnifier addAll: d.
-	^ newUnifier.! !
+	^ solutionFinder findSolution: value using: anMGU.! !
 
 !TailUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 19:20'!
 unificationClosureWith: anObject in: termRelation
@@ -45,5 +41,8 @@ named: aSymbol
 	^ self value: aSymbol asVariable.! !
 
 !TailUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:33'!
+value: anObject
+	^ self new value: anObject.! !
+tion' stamp: 'fbs 10/13/2011 07:33'!
 value: anObject
 	^ self new value: anObject.! !

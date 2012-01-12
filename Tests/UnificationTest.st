@@ -41,63 +41,63 @@ testSelfUnificationShouldUnify
 	self assert: (1 unifyWith: 1) isEmpty.
 	self assert: (x unifyWith: x) isEmpty.! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 5/26/2011 07:43'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:18'!
 testTrivialBidirectionalUnificationShouldUnify
 	| matches x y |
 	x := MetaVariable named: #x.
 	y := MetaVariable named: #y.
 	matches := x unifyWith: y.
-	self assert: matches = (Dictionary newFrom: {x -> y}).! !
+	self assert: matches = (MostGeneralUnifier newFrom: {x -> y}).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/4/2012 22:18'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:12'!
 testTrivialUnificationsShouldUnify
 	| x |
 	x := MetaVariable named: #x.
-	self assert: (x unifyWith: 2) = (Dictionary newFrom: {x -> 2}).
-	self assert: (2 unifyWith: x) = (Dictionary newFrom: {x -> 2}).! !
+	self assert: (x unifyWith: 2) = (MostGeneralUnifier newFrom: {x -> 2}).
+	self assert: (2 unifyWith: x) = (MostGeneralUnifier newFrom: {x -> 2}).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/4/2012 22:22'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:18'!
 testTwoVariableBidirectionalUnificationShouldUnifyBoth
 	| matches left right |
 	left := MetaVariable named: #left.
 	right := MetaVariable named: #right.
 	matches := {left. 2} unifyWith: {1. right}.
-	self assert: matches = (Dictionary newFrom: {
+	self assert: matches = (MostGeneralUnifier newFrom: {
 		left -> 1.
 		right -> 2}).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/4/2012 22:21'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:17'!
 testTwoVariableUnificationShouldUnifyBoth
 	| matches left right |
 	left := MetaVariable named: #left.
 	right := MetaVariable named: #right.
 	matches := {left. right} unifyWith: {1. 2}.
-	self assert: matches = (Dictionary newFrom: {
+	self assert: matches = (MostGeneralUnifier newFrom: {
 		left -> 1.
 		right -> 2}).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/5/2012 09:27'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:17'!
 testUnificationWorksOnDeepStructures
 	| matches x y |
 	x := MetaVariable named: #x.
 	y := MetaVariable named: #y.
 	matches := { {{x}} } unifyWith: {y}.
-	self assert: matches = (Dictionary newFrom: { y -> {{x}} }).! !
+	self assert: matches = (MostGeneralUnifier newFrom: { y -> {{x}} }).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/4/2012 22:24'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:19'!
 testVariableUnifyingAgainstTwoVariables
 	| matches x y z |
 	x := MetaVariable named: #x.
 	y := MetaVariable named: #y.
 	z := MetaVariable named: #z.
 	matches := {x. x.} unifyWith: {y. z.}.
-	self assert: matches = (Dictionary newFrom: {y -> x. z -> x}).! !
+	self assert: matches = (MostGeneralUnifier newFrom: {z -> x. y -> x.}).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/4/2012 21:36'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:18'!
 testVariablesInsideCollectionsUnify
 	| matches |
 	matches := {1. 2. #x asVariable. 4} =? #(1 2 3 4).
-	self assert: matches equals: (Dictionary newFromPairs: {#x asVariable. 3.}).
+	self assert: matches equals: (MostGeneralUnifier newFromPairs: {#x asVariable. 3.}).
 	
 	matches := #(1 2 3 4) =? {1. 2. #x asVariable. 4}.
-	self assert: matches equals: (Dictionary newFromPairs: {#x asVariable. 3.}).! !
+	self assert: matches equals: (MostGeneralUnifier newFromPairs: {#x asVariable. 3.}).! !

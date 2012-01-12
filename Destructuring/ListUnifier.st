@@ -11,25 +11,14 @@ I destructure a (sequenceable) collection into a head and a tail. For instance,
 unifies h with 1 and t with #(2 3).!
 
 
-!ListUnifier methodsFor: 'accessing' stamp: 'fbs 1/11/2012 20:25'!
-head
-	^ head.! !
-
-!ListUnifier methodsFor: 'accessing' stamp: 'fbs 1/11/2012 20:26'!
-tail
-	^ tail.! !
 
 
-
-!ListUnifier methodsFor: 'unification' stamp: 'fbs 1/10/2012 19:04'!
+!ListUnifier methodsFor: 'unification' stamp: 'fbs 1/12/2012 09:39'!
 findSolutionWithUnifier: anMGU in: solutionFinder
-	| newUnifier |
-	newUnifier := anMGU copy.
-	{head. tail.} do:
-		[:d |
-		d := solutionFinder findSolution: head using: anMGU.
-		newUnifier addAll: d].
-	^ newUnifier.! !
+	^ {head. tail.}
+		inject: anMGU
+		into: [:mgu :each | solutionFinder findSolution: each using: mgu].
+! !
 
 !ListUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 20:22'!
 unificationClosureWith: anObject in: termRelation
@@ -72,6 +61,11 @@ head: anObject tailNamed: tailSymbol
 !ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 19:01'!
 headNamed: headSymbol tail: anObject
 	^ self new head: headSymbol asVariable tail: anObject.! !
+
+!ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:36'!
+headNamed: headSymbol tailNamed: tailSymbol
+	^ self new head: headSymbol asVariable tail: tailSymbol asVariable.! !
+ol asVariable tail: anObject.! !
 
 !ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:36'!
 headNamed: headSymbol tailNamed: tailSymbol

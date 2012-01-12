@@ -1,13 +1,9 @@
 
-!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/4/2012 11:33'!
+!SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/12/2012 09:40'!
 findSolutionWithUnifier: anMGU in: solutionFinder
-	| newUnifier |
-	newUnifier := anMGU copy.
-	self do:
-		[:each | | d |
-		d := solutionFinder	findSolution: each using: newUnifier.
-		newUnifier addAll: d].
-	^ newUnifier.! !
+	^ self
+		inject: anMGU
+		into: [:mgu :each | solutionFinder findSolution: each using: mgu].! !
 
 !SequenceableCollection methodsFor: '*Unification' stamp: 'fbs 1/3/2012 15:30'!
 unificationClosureWith: anObject in: termRelation
@@ -23,4 +19,6 @@ unificationClosureWithSequence: aCollection in: termRelation
 	rel := termRelation.
 	self with: aCollection do:
 		[:si :ti | rel := (rel find: si) unificationClosureWith: (rel find: ti) in: rel].
+	^ rel.! !
+ (rel find: si) unificationClosureWith: (rel find: ti) in: rel].
 	^ rel.! !

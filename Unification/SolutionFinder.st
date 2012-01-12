@@ -7,22 +7,23 @@ Object subclass: #SolutionFinder
 Given an equivalence relation (partition) on some set of nodes, each class potentially containing one or more MetaVariables, construct a MostGeneralUnifier.!
 
 
-!SolutionFinder methodsFor: 'private' stamp: 'fbs 1/11/2012 20:08'!
+!SolutionFinder methodsFor: 'private' stamp: 'fbs 1/12/2012 19:02'!
 findSolution: anObject using: anMGU
 	| newUnifier schemaTerm |
 	schemaTerm := partition find: anObject.
 	(acyclic includes: schemaTerm) ifTrue: [^ anMGU "s is not part of a cycle."].
 	(visited includes: schemaTerm) ifTrue: [^ UnificationCycleFailure signalCycleOn: schemaTerm. "Cycle detected."].
 	
-	newUnifier := anMGU copy.
 	visited add: schemaTerm.
-	newUnifier addAll: (schemaTerm findSolutionWithUnifier: newUnifier in: self).
+	newUnifier := anMGU addAll: (schemaTerm findSolutionWithUnifier: anMGU in: self).
 	visited remove: schemaTerm.
 	
 	acyclic add: schemaTerm.
-	(partition varsAt: schemaTerm) do:
-		[:x | (x ~= schemaTerm) ifTrue: [newUnifier at: x put: schemaTerm]].
-	^ newUnifier.! !
+	^ (partition varsAt: schemaTerm)
+		inject: newUnifier
+		into: [:mgu :x | (x ~= schemaTerm)
+			ifTrue: [mgu at: x put: schemaTerm]
+			ifFalse: [mgu]].! !
 
 
 !SolutionFinder methodsFor: 'unification' stamp: 'fbs 1/4/2012 11:45'!
@@ -37,8 +38,9 @@ findSolutionFor: aVariableAvoidingUnionFind starting: anObject
 SolutionFinder class
 	instanceVariableNames: ''!
 
-!SolutionFinder class methodsFor: 'instance creation' stamp: 'fbs 1/12/2012 09:18'!
+!SolutionFinder class methodsFor: 'instance creation' stamp: 'fbs 1/12/2012 09:43'!
 findSolutionFor: aVariableAvoidingUnionFind
 	"The original algorithm from Baader & Synder's _Unification Theory_ shows finding the solution starting only from the root of one of the two operands s and t to be unified. However, ListUnifier unifies on an artificial node - a node that we construct and does not itself appear in either s or t. Thus we merge the partial solutions found by starting from a representative of each of the equivalence classes in the partition."
 	^ aVariableAvoidingUnionFind inject: MostGeneralUnifier new into:
-		[:mgu :node | mgu copy addAll: (self new findSolutionFor: aVariableAvoidingUnionFind starting: node); yourself]! !
+		[:mgu :node | mgu addAll: (self new findSolutionFor: aVariableAvoidingUnionFind starting: node)]! !
+self]! !

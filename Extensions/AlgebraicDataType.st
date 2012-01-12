@@ -1,13 +1,9 @@
 
-!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 1/4/2012 11:31'!
+!AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 1/12/2012 09:23'!
 findSolutionWithUnifier: anMGU in: solutionFinder
-	| newUnifier |
-	newUnifier := anMGU copy.
-	self children do:
-		[:each | | d |
-		d := solutionFinder findSolution: each using: anMGU.
-		newUnifier addAll: d].
-	^ newUnifier.! !
+	^ self children
+		inject: anMGU
+		into: [:mgu :each | mgu addAll: (solutionFinder findSolution: each using: mgu)]! !
 
 !AlgebraicDataType methodsFor: '*Unification' stamp: 'fbs 5/25/2011 22:31'!
 isMetaVariable
@@ -33,4 +29,6 @@ unificationClosureWithAlgebraic: anObject in: termRelation
 	partition := termRelation.
 	self children with: anObject children do:
 		[:si :ti | partition := (partition find: si) unificationClosureWith: (partition find: ti) in: partition].
+	^ partition.! !
+th: (partition find: ti) in: partition].
 	^ partition.! !

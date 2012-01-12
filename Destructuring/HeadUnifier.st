@@ -12,13 +12,9 @@ I represent the head of an OrderedCollection.!
 	^ ListUnifier head: self tail: aTail.! !
 
 
-!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/9/2012 19:01'!
+!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/12/2012 09:34'!
 findSolutionWithUnifier: anMGU in: solutionFinder
-	| d newUnifier |
-	newUnifier := anMGU copy.
-	d := solutionFinder findSolution: value using: anMGU.
-	newUnifier addAll: d.
-	^ newUnifier.! !
+	^ solutionFinder findSolution: value using: anMGU.! !
 
 !HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 21:39'!
 unificationClosureWith: anObject in: termRelation
@@ -58,5 +54,8 @@ value: anObject
 	^ self new value: anObject.! !
 
 !HeadUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 14:01'!
+values: someObjects
+	^ MultiHeadUnifier new values: someObjects.! !
+/11/2012 14:01'!
 values: someObjects
 	^ MultiHeadUnifier new values: someObjects.! !
