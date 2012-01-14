@@ -34,4 +34,25 @@ testAddingVariableToVariableClassMakesOriginalVariableTheRepresentative
 	v := v union: #x asVariable with: #y asVariable.
 	self assert: #y asVariable equals: (v find: #y asVariable).
 	self assert: #y asVariable equals: (v find: #x asVariable).! !
-equals: (v find: #x asVariable).! !
+
+
+!VariableTrackingUnionFindTest methodsFor: 'testing - enumerating' stamp: 'fbs 1/14/2012 10:45'!
+testVarsInjectIntoIteratesOverVariables
+	| mgu vars |
+	mgu := VariableTrackingUnionFind
+		usingArrayType: PersistentCollection
+		partitioning: Dictionary new.
+	mgu := mgu union: #x asVariable with: 1.
+	mgu := mgu union: #z asVariable with: 1.
+	mgu := mgu union: #y asVariable with: 2.
+	vars := mgu varsInject: Set new into: [:acc :var | acc , {var}].
+	self assert: {#x asVariable. #y asVariable. #z asVariable} asSet equals: vars.! !
+
+!VariableTrackingUnionFindTest methodsFor: 'testing - enumerating' stamp: 'fbs 1/13/2012 18:51'!
+testVarsInjectIntoOverEmptyVariableCollectionDoesNothing
+	| mgu vars |
+	mgu := VariableTrackingUnionFind
+		usingArrayType: PersistentCollection
+		partitioning: Dictionary new.
+	vars := mgu varsInject: #() into: [:acc :var | acc , var].
+	self assert: #() equals: vars.! !

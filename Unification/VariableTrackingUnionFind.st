@@ -22,6 +22,18 @@ varsAt: anObject
 	^ vars at: anObject! !
 
 
+!VariableTrackingUnionFind methodsFor: 'enumerating' stamp: 'fbs 1/13/2012 18:59'!
+varsInject: initialValue into: binaryBlock
+	^ (vars inject: Set new into: [:allVars :theseVars | allVars , theseVars])
+		inject: initialValue into: binaryBlock.! !
+
+
+!VariableTrackingUnionFind methodsFor: 'initialize-release' stamp: 'fbs 1/3/2012 16:10'!
+initialize
+	super initialize.
+	vars := PersistentCollection initially: (DictionaryWithDefault wrapping: Dictionary new default: [:unused | Set new]).! !
+
+
 !VariableTrackingUnionFind methodsFor: 'private' stamp: 'fbs 1/3/2012 16:02'!
 copyWithRanks: anArray parents: anotherArray
 	^ self class new ranks: anArray parents: anotherArray vars: vars.! !
@@ -50,9 +62,3 @@ storeSchemaTermFor: anObject as: anotherObject
 		ifTrue:
 			[vars := self at: anotherObject addVar: anObject].
 	^ super storeSchemaTermFor: anObject as: anotherObject.! !
-
-
-!VariableTrackingUnionFind methodsFor: 'initialize-release' stamp: 'fbs 1/3/2012 16:10'!
-initialize
-	super initialize.
-	vars := PersistentCollection initially: (DictionaryWithDefault wrapping: Dictionary new default: [:unused | Set new]).! !

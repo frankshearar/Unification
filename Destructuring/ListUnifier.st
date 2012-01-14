@@ -20,9 +20,8 @@ findSolutionWithUnifier: anMGU in: solutionFinder
 		into: [:mgu :each | solutionFinder findSolution: each using: mgu].
 ! !
 
-!ListUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 20:22'!
+!ListUnifier methodsFor: 'unification' stamp: 'fbs 1/14/2012 15:27'!
 unificationClosureWith: anObject in: termRelation
-	| partition |
 	anObject isMetaVariable
 		ifTrue: [^ termRelation union: self with: anObject].
 	anObject isCollection
@@ -30,14 +29,21 @@ unificationClosureWith: anObject in: termRelation
 	anObject isEmpty
 		ifTrue: [^ self failToUnifyWith: anObject].
 		
+	^ self unificationClosureWithSequence: anObject in: termRelation! !
+
+!ListUnifier methodsFor: 'unification' stamp: 'fbs 1/14/2012 15:27'!
+unificationClosureWithSequence: someObjects in: termRelation
+	| h t partition |
 	"It would be nice to drive the type checking into head and tail. The trouble is that tail needs to know head's size. Rather than polluting tail's API, we hold our nose and suffer the below."
 	"Calculating headSize = 1 if not a collection doesn't help because if size = 1, there's still a difference between x and {x}."
-	partition := head isCollection
-		ifTrue: [head unificationClosureWith: (anObject first: head size) in: termRelation]
-		ifFalse: [head unificationClosureWith: anObject first in: termRelation].
-	^ head isCollection
-		ifTrue: [tail unificationClosureWith: (anObject allButFirst: head size) in: partition]
-		ifFalse: [tail unificationClosureWith: anObject allButFirst in: partition].! !
+	h := head isCollection
+		ifTrue: [someObjects first: head size]
+		ifFalse: [1].
+	t := head isCollection
+		ifTrue: [someObjects allButFirst: head size]
+		ifFalse: [someObjects allButFirst].
+	partition := head unificationClosureWith: h in: termRelation.
+	^ tail unificationClosureWith: t in: partition.! !
 
 
 !ListUnifier methodsFor: 'private' stamp: 'fbs 10/13/2011 07:35'!
@@ -65,8 +71,5 @@ headNamed: headSymbol tail: anObject
 !ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:36'!
 headNamed: headSymbol tailNamed: tailSymbol
 	^ self new head: headSymbol asVariable tail: tailSymbol asVariable.! !
-ol asVariable tail: anObject.! !
-
-!ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:36'!
-headNamed: headSymbol tailNamed: tailSymbol
+: headSymbol tailNamed: tailSymbol
 	^ self new head: headSymbol asVariable tail: tailSymbol asVariable.! !
