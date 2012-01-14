@@ -4,6 +4,22 @@ TestCase subclass: #TailUnifierTest
 	poolDictionaries: ''
 	category: 'Unification-Tests-Destructuring'!
 
+
+!TailUnifierTest methodsFor: 'testing - error reporting' stamp: 'fbs 1/11/2012 20:56'!
+testErrorMentionsUnunifiableNodes
+	[1 =? (TailUnifier named: #y)] on: UnificationFailure do:
+		[:e |
+		self assert: (e this isKindOf: TailUnifier).
+		self assert: 1 equals: e that].! !
+
+
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 20:43'!
+testCanUnifyAgainstaVariable
+	| mgu tail |
+	mgu := #x asVariable =? (TailUnifier named: #y).
+	tail := mgu at: #x asVariable.
+	self assert: #x asVariable equals: tail value.! !
+
 !TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
 testTailCantUnifyWithNormalObjects
 	self should: [1 =? (TailUnifier named: #x)] raise: UnificationFailure.
@@ -32,12 +48,3 @@ testUnifyingWithEmptyCollectionFails
 !TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
 testUnifyingWithEmptyCollectionFailsWhenRightOperand
 	self should: [#() =? (TailUnifier named: #x)] raise: UnificationFailure.! !
-
-
-!TailUnifierTest methodsFor: 'testing - error reporting' stamp: 'fbs 1/11/2012 20:56'!
-testErrorMentionsUnunifiableNodes
-	[1 =? (TailUnifier named: #y)] on: UnificationFailure do:
-		[:e |
-		self assert: (e this isKindOf: TailUnifier).
-		self assert: 1 equals: e that].! !
-

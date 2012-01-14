@@ -11,6 +11,14 @@ I destructure a (sequenceable) collection into a head and a tail. For instance,
 unifies h with 1 and t with #(2 3).!
 
 
+!ListUnifier methodsFor: 'accessing' stamp: 'fbs 1/14/2012 20:36'!
+head
+	^ head.! !
+
+!ListUnifier methodsFor: 'accessing' stamp: 'fbs 1/14/2012 20:36'!
+tail
+	^ tail.! !
+
 
 
 !ListUnifier methodsFor: 'unification' stamp: 'fbs 1/12/2012 09:39'!
@@ -70,6 +78,4 @@ headNamed: headSymbol tail: anObject
 
 !ListUnifier class methodsFor: 'instance creation' stamp: 'fbs 10/13/2011 07:36'!
 headNamed: headSymbol tailNamed: tailSymbol
-	^ self new head: headSymbol asVariable tail: tailSymbol asVariable.! !
-: headSymbol tailNamed: tailSymbol
 	^ self new head: headSymbol asVariable tail: tailSymbol asVariable.! !

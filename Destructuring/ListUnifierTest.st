@@ -50,6 +50,14 @@ testCanAppearOnRightHandSide
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: #(2 3) equals: (mgu at: #y asVariable).! !
 
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 20:36'!
+testCanUnifyAgainstaVariable
+	| mgu list |
+	mgu := #z asVariable =? (ListUnifier headNamed: #x tailNamed: #y).
+	list := mgu at: #z asVariable.
+	self assert: #x asVariable equals: list head.
+	self assert: #y asVariable equals: list tail.! !
+
 !ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:27'!
 testCantUnifyWithNormalObjects
 	self should: [1 =? (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
