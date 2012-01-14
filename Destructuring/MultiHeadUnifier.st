@@ -11,6 +11,11 @@ Just like a HeadUnifier, but I unify against the first N elements of some collec
 matchAgainst: aCollection in: termRelation
 	^ values unificationClosureWith: (aCollection first: values size) in: termRelation.! !
 
+!MultiHeadUnifier methodsFor: 'private' stamp: 'fbs 1/14/2012 21:18'!
+unificationClosureWithSequence: aSequence in: termRelation
+	aSequence ifEmpty: [^ self failToUnifyWith: aSequence].
+	^ values unificationClosureWith: (aSequence first: values size) in: termRelation.! !
+
 !MultiHeadUnifier methodsFor: 'private' stamp: 'fbs 1/11/2012 18:43'!
 values: someObjects
 	values := someObjects.! !

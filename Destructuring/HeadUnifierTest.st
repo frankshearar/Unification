@@ -31,12 +31,12 @@ testCanUnifyAgainstFirstNWhenRightOperand
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: 2 equals: (mgu at: #y asVariable).! !
 
-!HeadUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 20:43'!
+!HeadUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 21:10'!
 testCanUnifyAgainstaVariable
 	| mgu head |
 	mgu := #x asVariable =? (HeadUnifier named: #y).
 	head := mgu at: #x asVariable.
-	self assert: #x asVariable equals: head value.! !
+	self assert: #y asVariable equals: head value.! !
 
 !HeadUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:45'!
 testHeadCantUnifyWithNormalObjects

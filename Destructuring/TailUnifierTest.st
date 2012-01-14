@@ -13,12 +13,12 @@ testErrorMentionsUnunifiableNodes
 		self assert: 1 equals: e that].! !
 
 
-!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 20:43'!
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 21:19'!
 testCanUnifyAgainstaVariable
 	| mgu tail |
 	mgu := #x asVariable =? (TailUnifier named: #y).
 	tail := mgu at: #x asVariable.
-	self assert: #x asVariable equals: tail value.! !
+	self assert: #y asVariable equals: tail value.! !
 
 !TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
 testTailCantUnifyWithNormalObjects

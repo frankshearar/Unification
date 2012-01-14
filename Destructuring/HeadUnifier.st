@@ -7,6 +7,11 @@ DestructuringUnifier subclass: #HeadUnifier
 I represent the head of an OrderedCollection.!
 
 
+!HeadUnifier methodsFor: 'evaluating' stamp: 'fbs 1/14/2012 21:13'!
+value
+	^ value.! !
+
+
 !HeadUnifier methodsFor: 'structuring' stamp: 'fbs 1/10/2012 09:27'!
 | aTail
 	^ ListUnifier head: self tail: aTail.! !
@@ -16,25 +21,19 @@ I represent the head of an OrderedCollection.!
 findSolutionWithUnifier: anMGU in: solutionFinder
 	^ solutionFinder findSolution: value using: anMGU.! !
 
-!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 21:39'!
+!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/14/2012 21:06'!
 unificationClosureWith: anObject in: termRelation
 	anObject isMetaVariable
 		ifTrue: [^ termRelation union: self with: anObject].
 	anObject isCollection
 		ifFalse: [^ self failToUnifyWith: anObject].
-	anObject isEmpty
-		ifTrue: [^ self failToUnifyWith: anObject].
-	^ self matchAgainst: anObject in: termRelation.! !
+	^ self unificationClosureWithSequence: anObject in: termRelation! !
 
-!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/11/2012 20:16'!
+!HeadUnifier methodsFor: 'unification' stamp: 'fbs 1/14/2012 21:18'!
 unificationClosureWithSequence: aSequence in: termRelation
 	aSequence ifEmpty: [^ self failToUnifyWith: aSequence].
-	^ self matchAgainst: aSequence in: termRelation.! !
+	^ value unificationClosureWith: aSequence first in: termRelation.! !
 
-
-!HeadUnifier methodsFor: 'private' stamp: 'fbs 1/11/2012 18:42'!
-matchAgainst: aCollection in: termRelation
-	^ value unificationClosureWith: aCollection first in: termRelation.! !
 
 !HeadUnifier methodsFor: 'private' stamp: 'fbs 10/13/2011 07:31'!
 value: anObject
@@ -54,6 +53,9 @@ value: anObject
 	^ self new value: anObject.! !
 
 !HeadUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 14:01'!
+values: someObjects
+	^ MultiHeadUnifier new values: someObjects.! !
+or: 'instance creation' stamp: 'fbs 1/11/2012 14:01'!
 values: someObjects
 	^ MultiHeadUnifier new values: someObjects.! !
 /11/2012 14:01'!
