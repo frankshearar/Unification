@@ -84,14 +84,14 @@ testUnificationWorksOnDeepStructures
 	matches := { {{x}} } unifyWith: {y}.
 	self assert: matches = (MostGeneralUnifier newFrom: { y -> {{x}} }).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:19'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/15/2012 22:23'!
 testVariableUnifyingAgainstTwoVariables
 	| matches x y z |
 	x := MetaVariable named: #x.
 	y := MetaVariable named: #y.
 	z := MetaVariable named: #z.
 	matches := {x. x.} unifyWith: {y. z.}.
-	self assert: matches = (MostGeneralUnifier newFrom: {z -> x. y -> x.}).! !
+	self assert: matches = (MostGeneralUnifier newFrom: {y -> x. z -> x.}).! !
 
 !UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:18'!
 testVariablesInsideCollectionsUnify

@@ -38,9 +38,8 @@ findSolutionFor: aVariableAvoidingUnionFind starting: anObject
 SolutionFinder class
 	instanceVariableNames: ''!
 
-!SolutionFinder class methodsFor: 'instance creation' stamp: 'fbs 1/14/2012 10:44'!
+!SolutionFinder class methodsFor: 'instance creation' stamp: 'fbs 1/15/2012 21:53'!
 findSolutionFor: aVariableAvoidingUnionFind
 	"The original algorithm from Baader & Synder's _Unification Theory_ shows finding the solution starting only from the root of one of the two operands s and t to be unified. However, ListUnifier unifies on an artificial node - a node that we construct and does not itself appear in either s or t. Thus we merge the partial solutions found by starting from a representative of each of the equivalence classes in the partition."
-	^ aVariableAvoidingUnionFind varsInject: MostGeneralUnifier new into:
+	^ aVariableAvoidingUnionFind variableContainingClasses inject: MostGeneralUnifier new into:
 		[:mgu :node | mgu addAll: (self new findSolutionFor: aVariableAvoidingUnionFind starting: node)]! !
-]! !

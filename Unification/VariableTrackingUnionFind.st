@@ -17,12 +17,38 @@ at: anObject addVar: aMetaVariable
 	representative := self find: anObject.
 	^ vars at: representative put: ((vars at: representative) , {aMetaVariable})! !
 
+!VariableTrackingUnionFind methodsFor: 'accessing' stamp: 'fbs 1/15/2012 19:01'!
+union: anObject with: anotherObject
+	| cx cy rx ry |
+	cx := self find: anObject.
+	cy := self find: anotherObject.
+	(cx = cy) ifTrue: [^ self].
+	
+	rx := ranks at: cx.
+	ry := ranks at: cy.
+	
+	(rx > ry)
+		ifTrue: [
+			^ self class new ranks: (ranks at: cy put: ry + rx)
+				parents: (self storeSchemaTermFor: cy as: cx)
+				vars: (self updateVarsFor: cy and: cx)].
+		
+	^ self class new ranks: (ranks at: cx put: ry + rx)
+		parents: (self storeSchemaTermFor: cx as: cy)
+		vars: (self updateVarsFor: cx and: cy).! !
+
+!VariableTrackingUnionFind methodsFor: 'accessing' stamp: 'fbs 1/15/2012 20:12'!
+variableContainingClasses
+	"Return the representatives of those classes containing variables."
+	^ vars withValue: [:dict |
+		(dict reject: #isEmpty) keys].! !
+
 !VariableTrackingUnionFind methodsFor: 'accessing' stamp: 'fbs 1/3/2012 16:01'!
 varsAt: anObject
 	^ vars at: anObject! !
 
 
-!VariableTrackingUnionFind methodsFor: 'enumerating' stamp: 'fbs 1/13/2012 18:59'!
+!VariableTrackingUnionFind methodsFor: 'enumerating' stamp: 'fbs 1/15/2012 15:34'!
 varsInject: initialValue into: binaryBlock
 	^ (vars inject: Set new into: [:allVars :theseVars | allVars , theseVars])
 		inject: initialValue into: binaryBlock.! !
@@ -34,31 +60,42 @@ initialize
 	vars := PersistentCollection initially: (DictionaryWithDefault wrapping: Dictionary new default: [:unused | Set new]).! !
 
 
-!VariableTrackingUnionFind methodsFor: 'private' stamp: 'fbs 1/3/2012 16:02'!
-copyWithRanks: anArray parents: anotherArray
-	^ self class new ranks: anArray parents: anotherArray vars: vars.! !
-
 !VariableTrackingUnionFind methodsFor: 'private' stamp: 'fbs 1/3/2012 16:03'!
 ranks: anArray parents: anotherArray vars: aThirdArray
 	super ranks: anArray parents: anotherArray.
 	vars := aThirdArray.! !
 
-!VariableTrackingUnionFind methodsFor: 'private' stamp: 'fbs 1/4/2012 16:28'!
+!VariableTrackingUnionFind methodsFor: 'private' stamp: 'fbs 1/15/2012 21:53'!
 storeSchemaTermFor: anObject as: anotherObject
+	"The schema function is a function from terms to equivalence classes such that:
+	* sigma(C) elem C,
+	* sigma(C) is a variable only if every c in C is a variable."
+	
+	(anObject isMetaVariable and: [anotherObject isMetaVariable])
+		ifTrue:
+			[^ super storeSchemaTermFor: anObject as: anotherObject].
+
+	anotherObject isMetaVariable
+		ifTrue:
+			[^ super storeSchemaTermFor: anotherObject as: anObject].
+
+	^ super storeSchemaTermFor: anObject as: anotherObject.! !
+
+!VariableTrackingUnionFind methodsFor: 'private' stamp: 'fbs 1/15/2012 16:16'!
+updateVarsFor: anObject and: anotherObject
 	"The schema function is a function from terms to equivalence classes such that:
 	* sigma(C) elem C,
 	* sigma(C) is a variable only if every c in C is a variable."
 	(anObject isMetaVariable and: [anotherObject isMetaVariable])
 		ifTrue:
-			[vars := self at: anotherObject addVar: anObject.
-			^ super storeSchemaTermFor: anObject as: anotherObject].
+			[^ self at: anotherObject addVar: anObject].
 
 	anotherObject isMetaVariable
 		ifTrue:
-			[vars := self at: anObject addVar: anotherObject.
-			^ super storeSchemaTermFor: anotherObject as: anObject].
+			[^ self at: anObject addVar: anotherObject].
 
 	anObject isMetaVariable
 		ifTrue:
-			[vars := self at: anotherObject addVar: anObject].
-	^ super storeSchemaTermFor: anObject as: anotherObject.! !
+			[^ self at: anotherObject addVar: anObject].
+		
+	^ vars.! !

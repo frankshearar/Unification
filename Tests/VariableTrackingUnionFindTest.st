@@ -35,6 +35,26 @@ testAddingVariableToVariableClassMakesOriginalVariableTheRepresentative
 	self assert: #y asVariable equals: (v find: #y asVariable).
 	self assert: #y asVariable equals: (v find: #x asVariable).! !
 
+!VariableTrackingUnionFindTest methodsFor: 'testing' stamp: 'fbs 1/15/2012 15:56'!
+testUnifyingWithVariableLeavesOriginalInstanceUnchanged
+	| p1 p2 |
+	p1 := self makePartition.
+	p2 := p1 union: 1 with: #x asVariable.
+	self assert: #() equals: p1 variableContainingClasses asArray.! !
+
+
+!VariableTrackingUnionFindTest methodsFor: 'testing - accessing' stamp: 'fbs 1/15/2012 15:46'!
+testVariableContainingClassesReturnsCollectionOnNonVariablePartition
+	| partition |
+	partition := self makePartition union: #x asVariable with: 1.
+	partition := partition union: #y asVariable with: 2.
+	partition := partition union: 3 with: 4.
+	self assert: #(1 2) sort equals: partition variableContainingClasses asArray sort.! !
+
+!VariableTrackingUnionFindTest methodsFor: 'testing - accessing' stamp: 'fbs 1/15/2012 15:46'!
+testVariableContainingClassesReturnsEmptyCollectionOnNonVariablePartition
+	self assert: #() equals: (self makePartition union: 1 with: 2) variableContainingClasses asArray.! !
+
 
 !VariableTrackingUnionFindTest methodsFor: 'testing - enumerating' stamp: 'fbs 1/14/2012 10:45'!
 testVarsInjectIntoIteratesOverVariables
