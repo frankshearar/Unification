@@ -7,16 +7,20 @@ HeadUnifier subclass: #MultiHeadUnifier
 Just like a HeadUnifier, but I unify against the first N elements of some collection.!
 
 
-!MultiHeadUnifier methodsFor: 'private' stamp: 'fbs 1/11/2012 18:43'!
-matchAgainst: aCollection in: termRelation
-	^ values unificationClosureWith: (aCollection first: values size) in: termRelation.! !
-
 !MultiHeadUnifier methodsFor: 'private' stamp: 'fbs 1/14/2012 21:18'!
 unificationClosureWithSequence: aSequence in: termRelation
 	aSequence ifEmpty: [^ self failToUnifyWith: aSequence].
 	^ values unificationClosureWith: (aSequence first: values size) in: termRelation.! !
 
 !MultiHeadUnifier methodsFor: 'private' stamp: 'fbs 1/11/2012 18:43'!
+values: someObjects
+	values := someObjects.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+MultiHeadUnifier class
+	instanceVariableNames: 'values'!
+rivate' stamp: 'fbs 1/11/2012 18:43'!
 values: someObjects
 	values := someObjects.! !
 
