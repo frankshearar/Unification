@@ -47,11 +47,14 @@ testHeadCantUnifyWithNormalObjects
 	self should: [(HeadUnifier named: #x) =? $a] raise: UnificationFailure.
 	self should: [(HeadUnifier named: #x) =? Object new] raise: UnificationFailure.! !
 
-!HeadUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:45'!
+!HeadUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/16/2012 16:42'!
 testPipeConstructsaListUnifier
-	| list |
-	list := (HeadUnifier named: #x) | (TailUnifier named: #y).
-	self assert: ListUnifier equals: list class.! !
+	| list mgu |
+	list := (HeadUnifier named: #x) | #y asVariable.
+	self assert: ListUnifier equals: list class.
+	mgu := list =? #(1 2 3).
+	self assert: 1 equals: (mgu at: #x asVariable).
+	self assert: #(2 3) equals: (mgu at: #y asVariable).! !
 
 !HeadUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:45'!
 testUnifyingWithCollectionUnifiesOnFirstElement
