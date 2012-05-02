@@ -26,7 +26,7 @@ size
 	^ dict size.! !
 
 
-!MostGeneralUnifier methodsFor: 'adding' stamp: 'fbs 5/2/2012 10:05'!
+!MostGeneralUnifier methodsFor: 'adding' stamp: 'fbs 5/2/2012 10:07'!
 addAll: anMGU <MostGeneralUnifier>
 	"Add all key->values in anMGU and self to a new MGU. When x->y and y->k (x, y MetaVariables) add x->k and y->k instead."
 	| newMapping twoStepVariables |
@@ -34,7 +34,7 @@ addAll: anMGU <MostGeneralUnifier>
 	anMGU keys do: [:k |
 		newMapping
 			at: k
-			ifPresent: [:v | MostGeneralUnifierMergeFailure  signal: ('{1} already points to a binding {2}' format: {k. v})]
+			ifPresent: [:v | MostGeneralUnifierMergeFailure  signal: ('{1} is already bound to {2}' format: {k. v})]
 			ifAbsent: [newMapping at: k put: (anMGU at: k)]].
 	
 	twoStepVariables := (self values intersection: anMGU keys).
@@ -128,3 +128,4 @@ newFromPairs: anArray
 	 for each odd i.  anArray must have an even number of entries."
 
 	^ self new wrappingDictionary: (Dictionary newFromPairs: anArray).! !
+ay).! !
