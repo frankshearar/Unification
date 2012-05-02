@@ -3,10 +3,10 @@ Object subclass: #Unifier
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Unification'!
-!Unifier commentStamp: 'fbs 7/23/2011 11:32' prior: 0!
+!Unifier commentStamp: 'fbs 5/2/2012 09:50' prior: 0!
 I attempt to unify two structures, that is, find mappings between the MetaVariables (if any) within the two structures such that the structures represent the same structure.
 
-I return a Dictionary containing the most general unifier (which might be empty if the two structures are identical), or I raise a UnificationFailure.!
+I return a MostGeneralUnifier (which might be empty if the two structures are identical), or I raise a UnificationFailure.!
 
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -23,9 +23,20 @@ unify: left with: right
 	partition := (partition find: left)
 		unificationClosureWith: (partition find: right) in: partition.
 	^ SolutionFinder findSolutionFor: partition.! !
-_Unification Theory_ shows finding the solution starting only from s. However, ListUnifier unifies on an artificial node - a node that we construct and does not itself appear in either s or t. Thus we merge the partial solutions found by starting from a representative of each of the equivalence classes in the partition."
-	^ partition inject: MostGeneralUnifier new into:
-		[:mgu :node | mgu copy addAll: (SolutionFinder findSolutionFor: partition starting: node); yourself]! !
+
+!Unifier class methodsFor: 'instance creation' stamp: 'fbs 2/9/2012 19:14'!
+unify: left with: middle with: right
+	| partition |
+	partition := VariableTrackingUnionFind
+		usingArrayType: PersistentCollection
+		partitioning: Dictionary new.
+	partition := (partition find: left)
+		unificationClosureWith: (partition find: middle) in: partition.
+	partition := (partition find: middle)
+		unificationClosureWith: (partition find: right) in: partition.
+		
+	^ SolutionFinder findSolutionFor: partition.! !
+self]! !
 methodsFor: 'instance creation' stamp: 'fbs 5/25/2011 07:12'!
 unify: left with: right
 	^ self new unify: left with: right.! !

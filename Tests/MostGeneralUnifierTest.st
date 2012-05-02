@@ -36,12 +36,30 @@ testAddAllLeavesOriginalInstanceUntouched
 	new := old addAll: (MostGeneralUnifier newFromPairs: #(1 2)).
 	self deny: (old includesKey: 1).! !
 
+!MostGeneralUnifierTest methodsFor: 'testing - adding' stamp: 'fbs 2/10/2012 14:41'!
+testAddAllMergesTwoStepLookups
+	"x -> y, y -> 1 => x -> 1, y -> 1"
+	| old new |
+	old := MostGeneralUnifier newFromPairs: {#x asVariable. #y asVariable}.
+	new := old addAll: (MostGeneralUnifier newFromPairs: {#y asVariable. 1}).
+	self assert: 1 equals: (new at: #x asVariable).! !
+
 !MostGeneralUnifierTest methodsFor: 'testing - adding' stamp: 'fbs 1/12/2012 09:45'!
 testAddAllReturnsNewMGU
 	| old new |
 	old := MostGeneralUnifier new.
 	new := old addAll: (MostGeneralUnifier newFromPairs: #(1 2)).
 	self deny: old = new.! !
+
+!MostGeneralUnifierTest methodsFor: 'testing - adding' stamp: 'fbs 5/2/2012 10:05'!
+testAddAllWithConflictingBindingBlowsUp
+	| old new |
+	old := MostGeneralUnifier newFromPairs: #(1 2).
+	self
+		should: [new := old addAll: (MostGeneralUnifier newFromPairs: #(1 3))]
+		raise: MostGeneralUnifierMergeFailure
+		whoseDescriptionIncludes: '1'
+		description: 'Unexpected exception, or poorly described exception'.! !
 
 !MostGeneralUnifierTest methodsFor: 'testing - adding' stamp: 'fbs 1/12/2012 09:46'!
 testAtPutAddsKeyValue
