@@ -112,3 +112,8 @@ testPrintOnPrintsAlmostLikeDictionary
 	| mgu |
 	mgu := MostGeneralUnifier newFrom: {1 -> 2}.
 	self assert: 'MostGeneralUnifier(1->2 )' equals: mgu printString.! !
+
+
+!MostGeneralUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 5/2/2012 16:45'!
+testEmptyMGUaConstantValue
+	self assert: MostGeneralUnifier empty == MostGeneralUnifier empty.! !

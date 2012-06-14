@@ -1,6 +1,6 @@
 Object subclass: #MostGeneralUnifier
 	instanceVariableNames: 'dict'
-	classVariableNames: ''
+	classVariableNames: 'EmptyMGU'
 	poolDictionaries: ''
 	category: 'Unification'!
 !MostGeneralUnifier commentStamp: 'fbs 5/2/2012 09:49' prior: 0!
@@ -109,10 +109,23 @@ isEmpty
 wrappingDictionary: aDictionary
 	dict := aDictionary.! !
 
+
+!MostGeneralUnifier methodsFor: 'running' stamp: 'fbs 6/14/2012 09:16'!
+member: anObject of: someObjects
+	^ self addAll: ([(HeadUnifier value: anObject) unifyWith: someObjects]
+		on: UnificationFailure do:
+			[[((HeadUnifier value: anObject) | #tail asVariable) unifyWith: someObjects]
+				on: UnificationFailure do: [self]])! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 MostGeneralUnifier class
 	instanceVariableNames: ''!
+
+!MostGeneralUnifier class methodsFor: 'instance creation' stamp: 'fbs 5/2/2012 16:46'!
+empty
+	"A well-known object representing the empty most general unifier."
+	^ EmptyMGU.! !
 
 !MostGeneralUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/12/2012 18:47'!
 new
@@ -128,4 +141,11 @@ newFromPairs: anArray
 	 for each odd i.  anArray must have an even number of entries."
 
 	^ self new wrappingDictionary: (Dictionary newFromPairs: anArray).! !
-ay).! !
+
+
+!MostGeneralUnifier class methodsFor: 'class initialization' stamp: 'fbs 5/2/2012 16:46'!
+initialize
+	EmptyMGU := self new.! !
+
+
+MostGeneralUnifier initialize!

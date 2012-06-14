@@ -1,8 +1,4 @@
 
-!Object methodsFor: '*Unification' stamp: 'fbs 10/7/2011 07:43'!
-=? anObject
-	^ self unifyWith: anObject.! !
-
 !Object methodsFor: '*Unification' stamp: 'fbs 1/11/2012 20:33'!
 failToUnifyWith: anObject
 	UnificationFailure signalThis: self that: anObject.! !
@@ -55,3 +51,9 @@ unificationClosureWithSequence: aSequence in: termRelation
 !Object methodsFor: '*Unification' stamp: 'fbs 5/26/2011 20:42'!
 unifyWith: anObject
 	^ Unifier unify: self with: anObject.! !
+
+!Object methodsFor: '*Unification' stamp: 'fbs 5/8/2012 22:27'!
+unifyWith: anObject in: aMostGeneralUnifier
+	| newKnowledge |
+	newKnowledge := self unifyWith: anObject.
+	^ newKnowledge addAll: aMostGeneralUnifier.! !

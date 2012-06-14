@@ -5,46 +5,46 @@ TestCase subclass: #TailUnifierTest
 	category: 'Unification-Tests-Destructuring'!
 
 
-!TailUnifierTest methodsFor: 'testing - error reporting' stamp: 'fbs 1/11/2012 20:56'!
+!TailUnifierTest methodsFor: 'testing - error reporting' stamp: 'fbs 6/14/2012 09:17'!
 testErrorMentionsUnunifiableNodes
-	[1 =? (TailUnifier named: #y)] on: UnificationFailure do:
+	[1 unifyWith: (TailUnifier named: #y)] on: UnificationFailure do:
 		[:e |
 		self assert: (e this isKindOf: TailUnifier).
 		self assert: 1 equals: e that].! !
 
 
-!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 21:19'!
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:16'!
 testCanUnifyAgainstaVariable
 	| mgu tail |
-	mgu := #x asVariable =? (TailUnifier named: #y).
+	mgu := #x asVariable unifyWith: (TailUnifier named: #y).
 	tail := mgu at: #x asVariable.
 	self assert: #y asVariable equals: tail value.! !
 
-!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:17'!
 testTailCantUnifyWithNormalObjects
-	self should: [1 =? (TailUnifier named: #x)] raise: UnificationFailure.
-	self should: [$a =? (TailUnifier named: #x)] raise: UnificationFailure.
-	self should: [Object new =? (TailUnifier named: #x)] raise: UnificationFailure.
-	self should: [(TailUnifier named: #x) =? 1] raise: UnificationFailure.
-	self should: [(TailUnifier named: #x) =? $a] raise: UnificationFailure.
-	self should: [(TailUnifier named: #x) =? Object new] raise: UnificationFailure.! !
+	self should: [1 unifyWith: (TailUnifier named: #x)] raise: UnificationFailure.
+	self should: [$a unifyWith: (TailUnifier named: #x)] raise: UnificationFailure.
+	self should: [Object new unifyWith: (TailUnifier named: #x)] raise: UnificationFailure.
+	self should: [(TailUnifier named: #x) unifyWith: 1] raise: UnificationFailure.
+	self should: [(TailUnifier named: #x) unifyWith: $a] raise: UnificationFailure.
+	self should: [(TailUnifier named: #x) unifyWith: Object new] raise: UnificationFailure.! !
 
-!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:17'!
 testUnifyingWithCollectionUnifiesOnAllButFirstElements
 	| mgu |
-	mgu := (TailUnifier named: #x) =? #(1 2 3).
+	mgu := (TailUnifier named: #x) unifyWith: #(1 2 3).
 	self assert: #(2 3) equals: (mgu at: #x asVariable).! !
 
-!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:17'!
 testUnifyingWithCollectionUnifiesOnAllButFirstElementsWhenRightOperand
 	| mgu |
-	mgu := #(1 2 3) =? (TailUnifier named: #x).
+	mgu := #(1 2 3) unifyWith: (TailUnifier named: #x).
 	self assert: #(2 3) equals: (mgu at: #x asVariable).! !
 
-!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:17'!
 testUnifyingWithEmptyCollectionFails
-	self should: [(TailUnifier named: #x) =? #()] raise: UnificationFailure.! !
+	self should: [(TailUnifier named: #x) unifyWith: #()] raise: UnificationFailure.! !
 
-!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:44'!
+!TailUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:17'!
 testUnifyingWithEmptyCollectionFailsWhenRightOperand
-	self should: [#() =? (TailUnifier named: #x)] raise: UnificationFailure.! !
+	self should: [#() unifyWith: (TailUnifier named: #x)] raise: UnificationFailure.! !

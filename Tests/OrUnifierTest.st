@@ -11,30 +11,30 @@ setUp
 		right: (TreeNode right: #x asVariable).! !
 
 
-!OrUnifierTest methodsFor: 'test' stamp: 'fbs 10/7/2011 07:45'!
+!OrUnifierTest methodsFor: 'test' stamp: 'fbs 6/14/2012 09:16'!
 testFirstOptionUnifies
 	| mgu |
-	mgu := matcher =? (TreeNode left: (Leaf value: 1)).
+	mgu := matcher unifyWith: (TreeNode left: (Leaf value: 1)).
 	self assert: (mgu at: (#x asVariable)) = (Leaf value: 1).! !
 
-!OrUnifierTest methodsFor: 'test' stamp: 'fbs 8/9/2011 07:30'!
+!OrUnifierTest methodsFor: 'test' stamp: 'fbs 6/14/2012 09:16'!
 testNoUnificationPossibleStillSignalsError
-	self should: [matcher =? Tree empty] raise: UnificationFailure! !
+	self should: [matcher unifyWith: Tree empty] raise: UnificationFailure! !
 
-!OrUnifierTest methodsFor: 'test' stamp: 'fbs 10/7/2011 07:45'!
+!OrUnifierTest methodsFor: 'test' stamp: 'fbs 6/14/2012 09:16'!
 testSecondOptionUnifies
 	| mgu |
-	mgu := matcher =? (TreeNode right: (Leaf value: 1)).
+	mgu := matcher unifyWith: (TreeNode right: (Leaf value: 1)).
 	self assert: (mgu at: (#x asVariable)) = (Leaf value: 1).! !
 
-!OrUnifierTest methodsFor: 'test' stamp: 'fbs 12/28/2011 09:30'!
+!OrUnifierTest methodsFor: 'test' stamp: 'fbs 6/14/2012 09:16'!
 testUnifiesAsRightHandOperandAgainstFirstOption
 	| mgu |
-	mgu := (TreeNode left: (Leaf value: 1)) =? matcher.
+	mgu := (TreeNode left: (Leaf value: 1)) unifyWith: matcher.
 	self assert: (mgu at: (#x asVariable)) = (Leaf value: 1).! !
 
-!OrUnifierTest methodsFor: 'test' stamp: 'fbs 12/28/2011 09:30'!
+!OrUnifierTest methodsFor: 'test' stamp: 'fbs 6/14/2012 09:16'!
 testUnifiesAsRightHandOperandAgainstSecondOption
 	| mgu |
-	mgu := (TreeNode right: (Leaf value: 1)) =? matcher.
+	mgu := (TreeNode right: (Leaf value: 1)) unifyWith: matcher.
 	self assert: (mgu at: (#x asVariable)) = (Leaf value: 1).! !

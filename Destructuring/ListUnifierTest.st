@@ -4,113 +4,113 @@ TestCase subclass: #ListUnifierTest
 	poolDictionaries: ''
 	category: 'Unification-Tests-Destructuring'!
 
-!ListUnifierTest methodsFor: 'testing - error reporting' stamp: 'fbs 1/11/2012 22:02'!
+!ListUnifierTest methodsFor: 'testing - error reporting' stamp: 'fbs 6/14/2012 09:15'!
 testErrorMentionsUnunifiableNodes
-	[1 =? (ListUnifier headNamed: #x tailNamed: #y)] on: UnificationFailure do:
+	[1 unifyWith: (ListUnifier headNamed: #x tailNamed: #y)] on: UnificationFailure do:
 		[:e |
 		self assert: (e this isKindOf: ListUnifier).
 		self assert: 1 equals: e that].! !
 
 
-!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:01'!
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 6/14/2012 09:15'!
 testHeadNamedTailNamedReturnsListUnifier
 	| l mgu |
 	l := ListUnifier headNamed: #x tailNamed: #y.
-	mgu := l =? #(1 2 3).
+	mgu := l unifyWith: #(1 2 3).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: #(2 3) equals: (mgu at: #y asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:01'!
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 6/14/2012 09:15'!
 testHeadNamedTailReturnsListUnifier
 	| l mgu |
 	l := ListUnifier headNamed: #x tail: #(2 3).
-	mgu := l =? #(1 2 3).
+	mgu := l unifyWith: #(1 2 3).
 	self assert: 1 equals: (mgu at: #x asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:02'!
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 6/14/2012 09:15'!
 testHeadTailNamedReturnsListUnifier
 	| l mgu |
 	l := ListUnifier head: 1 tailNamed: #x.
-	mgu := l =? #(1 2 3).
+	mgu := l unifyWith: #(1 2 3).
 	self assert: #(2 3) equals: (mgu at: #x asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 1/11/2012 19:00'!
+!ListUnifierTest methodsFor: 'testing - instance creation' stamp: 'fbs 6/14/2012 09:16'!
 testHeadTailReturnsListUnifier
 	| l mgu |
 	l := ListUnifier head: #x asVariable tail: #y asVariable.
-	mgu := l =? #(1 2 3).
+	mgu := l unifyWith: #(1 2 3).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: #(2 3) equals: (mgu at: #y asVariable).! !
 
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 15:23'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:15'!
 testCanAppearOnRightHandSide
 	| mgu |
-	mgu := #(1 2 3) =? (ListUnifier headNamed: #x tailNamed: #y).
+	mgu := #(1 2 3) unifyWith: (ListUnifier headNamed: #x tailNamed: #y).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: #(2 3) equals: (mgu at: #y asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/14/2012 20:36'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:15'!
 testCanUnifyAgainstaVariable
 	| mgu list |
-	mgu := #z asVariable =? (ListUnifier headNamed: #x tailNamed: #y).
+	mgu := #z asVariable unifyWith: (ListUnifier headNamed: #x tailNamed: #y).
 	list := mgu at: #z asVariable.
 	self assert: #x asVariable equals: list head.
 	self assert: #y asVariable equals: list tail.! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:27'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:15'!
 testCantUnifyWithNormalObjects
-	self should: [1 =? (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
-	self should: [$a =? (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
-	self should: [Object new =? (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
-	self should: [(ListUnifier headNamed: #x tailNamed: #y) =? 1] raise: UnificationFailure.
-	self should: [(ListUnifier headNamed: #x tailNamed: #y) =? $a] raise: UnificationFailure.
-	self should: [(ListUnifier headNamed: #x tailNamed: #y) =? Object new] raise: UnificationFailure.! !
+	self should: [1 unifyWith: (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
+	self should: [$a unifyWith: (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
+	self should: [Object new unifyWith: (ListUnifier headNamed: #x tailNamed: #y)] raise: UnificationFailure.
+	self should: [(ListUnifier headNamed: #x tailNamed: #y) unifyWith: 1] raise: UnificationFailure.
+	self should: [(ListUnifier headNamed: #x tailNamed: #y) unifyWith: $a] raise: UnificationFailure.
+	self should: [(ListUnifier headNamed: #x tailNamed: #y) unifyWith: Object new] raise: UnificationFailure.! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 09:36'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:16'!
 testUnifyWithCollectionDestructuresIntoHeadAndTail
 	| mgu |
-	mgu := (ListUnifier headNamed: #x tailNamed: #y) =? #(1 2 3).
+	mgu := (ListUnifier headNamed: #x tailNamed: #y) unifyWith: #(1 2 3).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: #(2 3) equals: (mgu at: #y asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/11/2012 09:24'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:16'!
 testUnifyWithCollectionPermitsMultiElementHead
 	| mgu |
 	"[X, Y | T] = [1, 2, 3] in Prolog"
-	mgu := (ListUnifier head: {#x asVariable. #y asVariable} tail: #t asVariable) =? #(1 2 3).
+	mgu := (ListUnifier head: {#x asVariable. #y asVariable} tail: #t asVariable) unifyWith: #(1 2 3).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: 2 equals: (mgu at: #y asVariable).
 	self assert: #(3) equals: (mgu at: #t asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/11/2012 09:44'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:16'!
 testUnifyWithCollectionPermitsMultiElementHeadEvenWithEmptyTail
 	| mgu |
 	"[X, Y | T] = [1, 2, 3] in Prolog"
 	mgu := (ListUnifier head: {#x asVariable. #y asVariable} tail: #t asVariable)
-		=? (OrderedCollection with: 1 with: 2).
+		unifyWith: (OrderedCollection with: 1 with: 2).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: 2 equals: (mgu at: #y asVariable).
 	self assert: OrderedCollection new equals: (mgu at: #t asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 19:02'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:16'!
 testUnifyWithSingleElementCollectionMakesTailEmpty
 	| mgu |
-	mgu := (ListUnifier headNamed: #x tailNamed: #y) =? #(1).
+	mgu := (ListUnifier headNamed: #x tailNamed: #y) unifyWith: #(1).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: #() equals: (mgu at: #y asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/10/2012 19:02'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:16'!
 testUnifyWithSingleElementCollectionRespectsCollectionType
 	| mgu |
-	mgu := (ListUnifier headNamed: #x tailNamed: #y) =? (OrderedCollection with: 1).
+	mgu := (ListUnifier headNamed: #x tailNamed: #y) unifyWith: (OrderedCollection with: 1).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: OrderedCollection new equals: (mgu at: #y asVariable).! !
 
-!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 1/11/2012 21:59'!
+!ListUnifierTest methodsFor: 'testing - unification' stamp: 'fbs 6/14/2012 09:16'!
 testUnifyWithSpecificTail
 	| mgu |
-	mgu := (ListUnifier headNamed: #x tail: {#y asVariable. #z asVariable}) =? #(1 2 3).
+	mgu := (ListUnifier headNamed: #x tail: {#y asVariable. #z asVariable}) unifyWith: #(1 2 3).
 	self assert: 1 equals: (mgu at: #x asVariable).
 	self assert: 2 equals: (mgu at: #y asVariable).
 	self assert: 3 equals: (mgu at: #z asVariable).! !

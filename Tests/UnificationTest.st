@@ -4,13 +4,13 @@ TestCase subclass: #UnificationTest
 	poolDictionaries: ''
 	category: 'Unification-Tests'!
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/8/2012 22:49'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 6/14/2012 09:18'!
 testAnythingCanUnifyAgainstMetaVariables
-	self shouldnt: ['a' =? #x asVariable] raise: UnificationFailure.
-	self shouldnt: [$a =? #x asVariable] raise: UnificationFailure.
-	self shouldnt: [1 =? #x asVariable] raise: UnificationFailure.
-	self shouldnt: [#() =? #x asVariable] raise: UnificationFailure.
-	self shouldnt: [Object new =? #x asVariable] raise: UnificationFailure.! !
+	self shouldnt: ['a' unifyWith: #x asVariable] raise: UnificationFailure.
+	self shouldnt: [$a unifyWith: #x asVariable] raise: UnificationFailure.
+	self shouldnt: [1 unifyWith: #x asVariable] raise: UnificationFailure.
+	self shouldnt: [#() unifyWith: #x asVariable] raise: UnificationFailure.
+	self shouldnt: [Object new unifyWith: #x asVariable] raise: UnificationFailure.! !
 
 !UnificationTest methodsFor: 'testing' stamp: 'fbs 1/11/2012 22:09'!
 testCyclicStructuresCantUnify
@@ -25,13 +25,13 @@ testCyclicStructuresCantUnify
 testImpossibleUnificationShouldNotUnify
 	self should: [1 unifyWith: 2] raise: UnificationFailure.! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/8/2012 22:56'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 6/14/2012 09:18'!
 testMetaVariablesCanUnifyAgainstAnything
-	self shouldnt: [#x asVariable =? 'a'] raise: UnificationFailure.
-	self shouldnt: [#x asVariable =? $a] raise: UnificationFailure.
-	self shouldnt: [#x asVariable =? 1] raise: UnificationFailure.
-	self shouldnt: [#x asVariable =? #()] raise: UnificationFailure.
-	self shouldnt: [#x asVariable =? Object new] raise: UnificationFailure.! !
+	self shouldnt: [#x asVariable unifyWith: 'a'] raise: UnificationFailure.
+	self shouldnt: [#x asVariable unifyWith: $a] raise: UnificationFailure.
+	self shouldnt: [#x asVariable unifyWith: 1] raise: UnificationFailure.
+	self shouldnt: [#x asVariable unifyWith: #()] raise: UnificationFailure.
+	self shouldnt: [#x asVariable unifyWith: Object new] raise: UnificationFailure.! !
 
 !UnificationTest methodsFor: 'testing' stamp: 'fbs 5/29/2011 15:08'!
 testSelfUnificationShouldUnify
@@ -93,11 +93,11 @@ testVariableUnifyingAgainstTwoVariables
 	matches := {x. x.} unifyWith: {y. z.}.
 	self assert: matches = (MostGeneralUnifier newFrom: {y -> x. z -> x.}).! !
 
-!UnificationTest methodsFor: 'testing' stamp: 'fbs 1/12/2012 19:18'!
+!UnificationTest methodsFor: 'testing' stamp: 'fbs 6/14/2012 09:18'!
 testVariablesInsideCollectionsUnify
 	| matches |
-	matches := {1. 2. #x asVariable. 4} =? #(1 2 3 4).
+	matches := {1. 2. #x asVariable. 4} unifyWith: #(1 2 3 4).
 	self assert: matches equals: (MostGeneralUnifier newFromPairs: {#x asVariable. 3.}).
 	
-	matches := #(1 2 3 4) =? {1. 2. #x asVariable. 4}.
+	matches := #(1 2 3 4) unifyWith: {1. 2. #x asVariable. 4}.
 	self assert: matches equals: (MostGeneralUnifier newFromPairs: {#x asVariable. 3.}).! !

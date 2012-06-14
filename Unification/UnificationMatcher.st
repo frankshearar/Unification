@@ -9,7 +9,7 @@ I provide a unification-based case-like statement.
 I use memoisation as an optimisation.!
 
 
-!UnificationMatcher methodsFor: 'applying' stamp: 'fbs 8/8/2011 22:11'!
+!UnificationMatcher methodsFor: 'applying' stamp: 'fbs 6/14/2012 09:17'!
 match: anObject
 	"Iterate through the cases. As we evaluate the key thunks, replace them with the evaluated values. Much uglier than the naive implementation, but MUCH faster."
 	| newCases result unmatch |
@@ -20,7 +20,7 @@ match: anObject
 	cases associationsDo:
 		[:assoc | | mgu newKey |
 			[newKey := assoc key isBlock ifTrue: [assoc key value] ifFalse: [assoc key].
-			mgu := newKey =? anObject.
+			mgu := newKey unifyWith: anObject.
 			result = unmatch ifTrue: [result := assoc value cull: mgu].
 			newCases
 				add: newKey;
@@ -54,7 +54,7 @@ matcherUsing: aBlockAssociationCollection
 !UnificationMatcher class methodsFor: 'instance creation' stamp: 'fbs 7/28/2011 22:14'!
 matcherUsing: aBlockAssociationCollection otherwise: aBlock
 	^ self new matcherUsing: aBlockAssociationCollection otherwise: aBlock.! !
-edCollection new.
+ion new.
 	dictionary associationsDo: [:k :v |
 		newAssocs
 			add: (k = key ifTrue: [newKey] ifFalse: [k]);
