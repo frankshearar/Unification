@@ -55,9 +55,3 @@ value: anObject
 !HeadUnifier class methodsFor: 'instance creation' stamp: 'fbs 1/11/2012 14:01'!
 values: someObjects
 	^ MultiHeadUnifier new values: someObjects.! !
-nstance creation' stamp: 'fbs 1/11/2012 14:01'!
-values: someObjects
-	^ MultiHeadUnifier new values: someObjects.! !
-/11/2012 14:01'!
-values: someObjects
-	^ MultiHeadUnifier new values: someObjects.! !

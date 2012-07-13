@@ -30,5 +30,3 @@ unificationClosureWithAlgebraic: anObject in: termRelation
 	self children with: anObject children do:
 		[:si :ti | partition := (partition find: si) unificationClosureWith: (partition find: ti) in: partition].
 	^ partition.! !
-th: (partition find: ti) in: partition].
-	^ partition.! !

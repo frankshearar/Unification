@@ -20,4 +20,3 @@ testCanCreateFinder
 	| partition |
 	partition := self makePartition.
 	SolutionFinder findSolutionFor: partition.! !
-ing: 1.! !

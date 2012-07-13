@@ -133,4 +133,3 @@ UnificationEquivalenceClass class
 !UnificationEquivalenceClass class methodsFor: 'instance creation' stamp: 'fbs 5/25/2011 21:16'!
 decorate: anObject
 	^ self new decorate: anObject.! !
-elf new decorate: anObject.! !

@@ -20,5 +20,3 @@ unificationClosureWithSequence: aCollection in: termRelation
 	self with: aCollection do:
 		[:si :ti | rel := (rel find: si) unificationClosureWith: (rel find: ti) in: rel].
 	^ rel.! !
- (rel find: si) unificationClosureWith: (rel find: ti) in: rel].
-	^ rel.! !
